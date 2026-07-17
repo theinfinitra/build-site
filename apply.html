@@ -531,7 +531,7 @@
 
     const status = getApplicationStatus();
     if (!status.open) {
-      // Hide all slides, show closed screen
+      // Fully closed — show email-only waitlist
       document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
       const closedSlide = document.querySelector('[data-slide="closed"]');
       closedSlide.style.display = 'flex';
@@ -539,6 +539,10 @@
       document.getElementById('closed-message').textContent = status.message;
       document.getElementById('progressBar').style.width = '0%';
       return;
+    } else if (status.waitlist) {
+      // Past deadline — form still works but show waitlist context
+      document.querySelector('[data-slide="0"] .q-text').textContent = "You're applying for the waitlist.";
+      document.querySelector('[data-slide="0"] .q-hint').textContent = "The Aug 31 deadline has passed, but we're still accepting applications. If a seat opens or for the next cohort — you'll be first in line. Same form, same challenge.";
     }
   });
 

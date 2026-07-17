@@ -557,7 +557,7 @@
     <p class="subtitle">A build program in Kurnool. You spend 12 weeks building AI-powered software — the kind you can build a career on. Then a 2-month paid internship. Top performers get hired full-time. That's it. That's the deal.</p>
     <p class="who-signal">We don't care what you studied. We care what you'll build.</p>
     <a href="apply.html" class="hero-cta" id="hero-apply-btn">Apply Now →</a>
-    <p class="hero-meta">10 seats · Apply before Sep 5, 2026</p>
+    <p class="hero-meta">10 seats · Apply before Aug 31, 2026</p>
   </div>
 </section>
 
@@ -710,7 +710,7 @@
     <h2>Ready?</h2>
     <p>10 seats. Application takes 5 minutes. We call everyone who applies.</p>
     <a href="apply.html" class="hero-cta" id="cta-apply-btn">Apply Now →</a>
-    <p class="cta-fee">Apply before Sep 5, 2026 · Program fee applies — details on application</p>
+    <p class="cta-fee">Apply before Aug 31, 2026 · Program fee applies — details on application</p>
   </div>
 </section>
 
@@ -765,6 +765,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     const status = getApplicationStatus();
     if (!status.open) {
+      // Fully closed — disable buttons
       const buttons = document.querySelectorAll('#nav-apply-btn, #hero-apply-btn, #cta-apply-btn');
       buttons.forEach(btn => {
         btn.textContent = 'Applications Closed';
@@ -774,6 +775,14 @@
       });
       document.querySelector('.hero-meta').textContent = 'Next cohort coming soon.';
       document.querySelector('.cta-fee').textContent = 'Leave your email on the application page to be notified about the next cohort.';
+    } else if (status.waitlist) {
+      // Past deadline but still accepting for waitlist
+      document.querySelector('.hero-meta').textContent = 'Deadline passed · Waitlist applications open';
+      document.querySelector('.cta-fee').textContent = status.message;
+      const buttons = document.querySelectorAll('#nav-apply-btn, #hero-apply-btn, #cta-apply-btn');
+      buttons.forEach(btn => {
+        btn.textContent = 'Join Waitlist →';
+      });
     }
   });
 

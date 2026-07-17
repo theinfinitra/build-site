@@ -78,7 +78,7 @@ const CONFIG = {
   cohort: {
     name: "September 2026",
     startDate: "2026-09-15",
-    applicationDeadline: "2026-09-05",  // Auto-closes after this date
+    applicationDeadline: "2026-08-31",  // Auto-closes after this date
     seats: 10,
   },
   applications: {

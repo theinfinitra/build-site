@@ -8,8 +8,8 @@ const CONFIG = {
   // --- Cohort settings ---
   cohort: {
     name: "September 2026",
-    startDate: "2026-09-15",           // When the program starts
-    applicationDeadline: "2026-09-05", // Last date to apply (YYYY-MM-DD)
+    startDate: "2026-09-07",           // When the program starts
+    applicationDeadline: "2026-08-31", // Last date to apply (YYYY-MM-DD)
     seats: 10,
   },
 
@@ -19,11 +19,11 @@ const CONFIG = {
     // (e.g., if seats fill before the deadline)
     open: true,
 
-    // Message shown when applications are closed
-    closedMessage: "Applications for this cohort are closed. Leave your email to be notified about the next one.",
+    // Message shown when applications are closed manually
+    closedMessage: "Applications are fully closed for now. Leave your email to be notified about the next cohort.",
 
-    // Message shown when deadline has passed
-    deadlinePassedMessage: "The deadline for this cohort has passed. Leave your email to be notified about the next one.",
+    // Message shown when deadline has passed (still allows apply for waitlist)
+    deadlinePassedMessage: "The September cohort deadline has passed. You can still apply for the waitlist — if a seat opens or for the next cohort, you'll be first in line.",
   },
 
   // --- Google Apps Script endpoint ---
@@ -48,18 +48,18 @@ function isApplicationOpen() {
 
 function getApplicationStatus() {
   if (!CONFIG.applications.open) {
-    return { open: false, reason: "manual", message: CONFIG.applications.closedMessage };
+    return { open: false, waitlist: false, reason: "manual", message: CONFIG.applications.closedMessage };
   }
 
   const now = new Date();
   const deadline = new Date(CONFIG.cohort.applicationDeadline + "T23:59:59+05:30");
 
   if (now > deadline) {
-    return { open: false, reason: "deadline", message: CONFIG.applications.deadlinePassedMessage };
+    return { open: true, waitlist: true, reason: "deadline", message: CONFIG.applications.deadlinePassedMessage };
   }
 
   // Calculate days remaining
   const daysLeft = Math.ceil((deadline - now) / (1000 * 60 * 60 * 24));
 
-  return { open: true, daysLeft };
+  return { open: true, waitlist: false, daysLeft };
 }
