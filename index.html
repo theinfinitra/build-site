@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>infinitra.build — Your pathway to a career in AI</title>
+  <meta name="description" content="A 12-week build program in Kurnool. Build AI-powered software, earn an AWS certification, and walk into a paid role.">
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #7c3aed;
+      --primary-hover: #6d28d9;
+      --primary-light: #f5f3ff;
+      --bg: #faf9f7;
+      --text: #1c1917;
+      --text-muted: #57534e;
+      --text-light: #78716c;
+      --border: #e7e5e4;
+      --card-bg: #ffffff;
+      --nav-bg: rgba(250, 249, 247, 0.92);
+    }
+
+    [data-theme="dark"] {
+      --primary: #84cc16;
+      --primary-hover: #65a30d;
+      --primary-light: #1a2e05;
+      --bg: #09090b;
+      --text: #fafafa;
+      --text-muted: #a1a1aa;
+      --text-light: #71717a;
+      --border: #27272a;
+      --card-bg: #18181b;
+      --nav-bg: rgba(9, 9, 11, 0.92);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --primary: #84cc16;
+        --primary-hover: #65a30d;
+        --primary-light: #1a2e05;
+        --bg: #09090b;
+        --text: #fafafa;
+        --text-muted: #a1a1aa;
+        --text-light: #71717a;
+        --border: #27272a;
+        --card-bg: #18181b;
+        --nav-bg: rgba(9, 9, 11, 0.92);
+      }
+    }
+
+    body {
+      font-family: 'Satoshi', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 16px;
+    }
+
+    /* Layout */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    section {
+      padding: 4rem 0;
+    }
+
+    /* Nav */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--nav-bg);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+    }
+    nav .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      font-family: 'Clash Display', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo span { color: var(--primary); }
+    .nav-btn {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 0.5rem 1.2rem;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 0.4rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .nav-btn:hover { background: var(--primary-hover); }
+
+    /* Theme toggle */
+    .theme-toggle {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 0.4rem;
+      padding: 0.4rem 0.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s;
+    }
+    .theme-toggle:hover { border-color: var(--primary); }
+    .theme-toggle svg {
+      width: 1rem;
+      height: 1rem;
+      stroke: var(--text-muted);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .theme-toggle .icon-moon { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-sun { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-moon { display: block; }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    /* Hero */
+    .hero {
+      padding: 5rem 0 3rem;
+      text-align: center;
+    }
+    .hero h1 {
+      font-family: 'Clash Display', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+    }
+    .hero h1 .accent { color: var(--primary); }
+    .hero .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto 1rem;
+    }
+    .hero .who-signal {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 2rem;
+    }
+    .hero-cta {
+      display: inline-block;
+      font-family: 'Satoshi', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      padding: 0.9rem 2.5rem;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 0.5rem;
+      text-decoration: none;
+      transition: background 0.15s, transform 0.1s;
+    }
+    .hero-cta:hover { background: var(--primary-hover); transform: translateY(-1px); }
+    .hero-meta {
+      margin-top: 1rem;
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+
+    /* Section headings */
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--primary);
+      margin-bottom: 0.8rem;
+    }
+    .section-heading {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .section-subheading {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      max-width: 520px;
+    }
+
+    /* Pathway */
+    .pathway-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .p-step {
+      display: flex;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    .p-step-marker {
+      width: 2.2rem;
+      height: 2.2rem;
+      border-radius: 50%;
+      background: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .p-step-marker svg {
+      width: 1rem;
+      height: 1rem;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .p-step-text h3 {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+    .p-step-text p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    /* Curriculum */
+    .phases {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .phase-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .phase-card:hover { border-color: var(--primary); }
+    .phase-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+    .phase-card h3 {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .phase-card > p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+    }
+    .phase-weeks {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+    .week-item {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      padding: 0.4rem 0.6rem;
+      background: var(--bg);
+      border-radius: 0.3rem;
+    }
+    .week-item strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* Outcomes */
+    .outcomes-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    .outcome-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 0.6rem;
+      padding: 1.2rem;
+    }
+    .outcome-card h4 {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+    .outcome-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* CTA section */
+    .cta-section {
+      text-align: center;
+      padding: 4rem 0;
+      border-top: 2px solid var(--text);
+    }
+    .cta-section h2 {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .cta-section p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+    .cta-section .hero-cta {
+      font-size: 1.1rem;
+      padding: 1rem 3rem;
+    }
+    .cta-fee {
+      margin-top: 0.8rem;
+      font-size: 0.78rem;
+      color: var(--text-light);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem 0;
+    }
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    footer .left {
+      font-size: 0.8rem;
+      color: var(--text-light);
+    }
+    footer .right {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.75rem;
+      color: var(--text-light);
+    }
+    footer .right img {
+      height: 1.8rem;
+      width: auto;
+    }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      section { padding: 3rem 0; }
+      .hero { padding: 3rem 0 2rem; }
+      .phase-weeks { grid-template-columns: 1fr; }
+      .outcomes-grid { grid-template-columns: 1fr; }
+      footer .container { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav>
+  <div class="container">
+    <a href="/" class="logo">infinitra<span>.build</span></a>
+    <div class="nav-right">
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+        <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <a href="apply.html" class="nav-btn" id="nav-apply-btn">Apply →</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="container">
+    <h1>The career you want isn't 4 years away.<br><span class="accent">Start building, get hired.</span></h1>
+    <p class="subtitle">A build program in Kurnool. You spend 12 weeks building AI-powered software — the kind you can build a career on. Then a 2-month paid internship. Top performers get hired full-time.</p>
+    <p class="who-signal">We don't care what you studied. We care what you'll build.</p>
+    <a href="apply.html" class="hero-cta" id="hero-apply-btn">Apply Now →</a>
+    <p class="hero-meta">10 seats · Apply before Sep 5, 2026</p>
+  </div>
+</section>
+
+<!-- How it works -->
+<section>
+  <div class="container">
+    <p class="section-label">How It Works</p>
+    <h2 class="section-heading">Five steps to a career.</h2>
+    <p class="section-subheading">Not a course. A pathway. Every step gets you closer to a full-time role.</p>
+
+    <div class="pathway-steps">
+      <div class="p-step">
+        <div class="p-step-marker"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+        <div class="p-step-text">
+          <h3>Apply online</h3>
+          <p>Tell us who you are and why you want to build. Short form, honest answers.</p>
+        </div>
+      </div>
+      <div class="p-step">
+        <div class="p-step-marker"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="p-step-text">
+          <h3>Half-day at our studio</h3>
+          <p>Come in. Solve real problems. Work with others. Show us how you think under pressure.</p>
+        </div>
+      </div>
+      <div class="p-step">
+        <div class="p-step-marker"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+        <div class="p-step-text">
+          <h3>Build for 12 weeks</h3>
+          <p>Mon–Sat, 6 hours a day. Build apps that real people use. A new project every week. Your work goes live on the internet.</p>
+        </div>
+      </div>
+      <div class="p-step">
+        <div class="p-step-marker"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></div>
+        <div class="p-step-text">
+          <h3>2-month paid internship</h3>
+          <p>Join the team. Work on real products. Get paid while you grow.</p>
+        </div>
+      </div>
+      <div class="p-step">
+        <div class="p-step-marker"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+        <div class="p-step-text">
+          <h3>Full-time role</h3>
+          <p>Prove yourself during the internship. The best builders stay. This is the goal from day one.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Curriculum -->
+<section style="background: var(--card-bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="container">
+    <p class="section-label">What You Build</p>
+    <h2 class="section-heading">12 weeks. Three phases. All building.</h2>
+    <p class="section-subheading">No lectures. You learn by building real things — with AI tools from Day 1.</p>
+
+    <div class="phases">
+
+      <!-- Phase 1 -->
+      <div class="phase-card">
+        <p class="phase-tag">Weeks 1–4 · Foundation</p>
+        <h3>Your first AI app — live on the internet</h3>
+        <p>Start from zero. By the end of Week 1, something you built is online. By Week 4, you have a full app with a database, authentication, and automated deployment.</p>
+        <div class="phase-weeks">
+          <div class="week-item"><strong>Week 1:</strong> Python + development tools + Git</div>
+          <div class="week-item"><strong>Week 2:</strong> Web + your first AI-powered app on AWS</div>
+          <div class="week-item"><strong>Week 3:</strong> Backend + databases + containers</div>
+          <div class="week-item"><strong>Week 4:</strong> Cloud architecture + automated deployment</div>
+        </div>
+      </div>
+
+      <!-- Phase 2 -->
+      <div class="phase-card">
+        <p class="phase-tag">Weeks 5–8 · AI Systems</p>
+        <h3>Build autonomous AI agents</h3>
+        <p>The skills companies are hiring for right now. You'll build AI systems that think, plan, and act — not just chatbots.</p>
+        <div class="phase-weeks">
+          <div class="week-item"><strong>Week 5:</strong> AI applications + retrieval systems</div>
+          <div class="week-item"><strong>Week 6:</strong> AI agents + tool use</div>
+          <div class="week-item"><strong>Week 7:</strong> Multi-agent systems + real workflows</div>
+          <div class="week-item"><strong>Week 8:</strong> Production: monitoring, scaling, reliability</div>
+        </div>
+      </div>
+
+      <!-- Phase 3 -->
+      <div class="phase-card">
+        <p class="phase-tag">Weeks 9–12 · Build and Ship</p>
+        <h3>Team capstone + AWS certification</h3>
+        <p>Full-stack apps, a 2-week team sprint building a real product, AWS Cloud Practitioner exam, and a public demo day.</p>
+        <div class="phase-weeks">
+          <div class="week-item"><strong>Week 9:</strong> Full-stack: frontend + backend + AI + cloud</div>
+          <div class="week-item"><strong>Weeks 10–11:</strong> Team capstone — real product, shipped</div>
+          <div class="week-item"><strong>Week 12:</strong> AWS certification + demo day</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Outcomes -->
+<section>
+  <div class="container">
+    <p class="section-label">What You Leave With</p>
+    <h2 class="section-heading">A career or clarity, not just a certificate.</h2>
+    <p class="section-subheading">Everything you need to prove you can build — and a pathway to keep building.</p>
+
+    <div class="outcomes-grid">
+      <div class="outcome-card">
+        <h4>8+ live projects</h4>
+        <p>Deployed on the internet with real URLs. Not localhost. Not homework. Proof.</p>
+      </div>
+      <div class="outcome-card">
+        <h4>AWS Cloud Practitioner</h4>
+        <p>Industry-recognized certification. Exam taken in Week 12.</p>
+      </div>
+      <div class="outcome-card">
+        <h4>2-month paid internship</h4>
+        <p>Real work, real pay. Build products with the team. Top performers go full-time.</p>
+      </div>
+      <div class="outcome-card">
+        <h4>AI agent skills</h4>
+        <p>Build autonomous systems that think and act. The most in-demand skill in tech right now.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="container">
+    <h2>Ready?</h2>
+    <p>10 seats. Application takes 5 minutes. We call everyone who applies.</p>
+    <a href="apply.html" class="hero-cta" id="cta-apply-btn">Apply Now →</a>
+    <p class="cta-fee">Apply before Sep 5, 2026 · Program fee applies — details on application</p>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="left">© 2026 Infinitra · Kurnool, Andhra Pradesh</div>
+    <div class="right">
+      <span>AWS Advanced Tier Partner · Founded by ex-Amazon leaders</span>
+      <img src="aws-partner-advanced-tier.png" alt="AWS Advanced Tier Partner">
+    </div>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script>
+  // --- Theme toggle ---
+  function toggleTheme() {
+    const html = document.documentElement;
+    const current = html.getAttribute('data-theme');
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+    if (current === 'dark' || (!current && systemDark)) {
+      html.setAttribute('data-theme', 'light');
+      localStorage.setItem('theme', 'light');
+    } else {
+      html.setAttribute('data-theme', 'dark');
+      localStorage.setItem('theme', 'dark');
+    }
+  }
+
+  // Apply saved theme on load
+  (function() {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+  })();
+
+  // Disable apply buttons if applications are closed
+  document.addEventListener('DOMContentLoaded', () => {
+    const status = getApplicationStatus();
+    if (!status.open) {
+      const buttons = document.querySelectorAll('#nav-apply-btn, #hero-apply-btn, #cta-apply-btn');
+      buttons.forEach(btn => {
+        btn.textContent = 'Applications Closed';
+        btn.style.background = '#a8a29e';
+        btn.style.pointerEvents = 'none';
+        btn.removeAttribute('href');
+      });
+      document.querySelector('.hero-meta').textContent = 'Next cohort coming soon.';
+      document.querySelector('.cta-fee').textContent = 'Leave your email on the application page to be notified about the next cohort.';
+    }
+  });
+</script>
+
+</body>
+</html>

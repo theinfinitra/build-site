@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apply — infinitra.build</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #7c3aed;
+      --primary-hover: #6d28d9;
+      --primary-light: #f5f3ff;
+      --bg: #faf9f7;
+      --text: #1c1917;
+      --text-muted: #57534e;
+      --text-light: #78716c;
+      --border: #d6d3d1;
+      --error: #dc2626;
+      --success: #059669;
+    }
+
+    [data-theme="dark"] {
+      --primary: #84cc16;
+      --primary-hover: #65a30d;
+      --primary-light: #1a2e05;
+      --bg: #09090b;
+      --text: #fafafa;
+      --text-muted: #a1a1aa;
+      --text-light: #71717a;
+      --border: #3f3f46;
+      --error: #f87171;
+      --success: #4ade80;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --primary: #84cc16;
+        --primary-hover: #65a30d;
+        --primary-light: #1a2e05;
+        --bg: #09090b;
+        --text: #fafafa;
+        --text-muted: #a1a1aa;
+        --text-light: #71717a;
+        --border: #3f3f46;
+        --error: #f87171;
+        --success: #4ade80;
+      }
+    }
+
+    body {
+      font-family: 'Satoshi', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    /* Container */
+    .form-container {
+      width: 100%;
+      max-width: 560px;
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Progress bar */
+    .progress {
+      width: 100%;
+      height: 3px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-bottom: 3rem;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    /* Question slides */
+    .slide {
+      display: none;
+      flex-direction: column;
+      animation: fadeIn 0.3s ease;
+    }
+    .slide.active {
+      display: flex;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Question number */
+    .q-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Question text */
+    .q-text {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Question hint */
+    .q-hint {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      line-height: 1.5;
+    }
+
+    /* Inputs */
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 1.1rem;
+      padding: 0.8rem 0;
+      border: none;
+      border-bottom: 2px solid var(--border);
+      background: transparent;
+      color: var(--text);
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s ease;
+    }
+    input:focus, textarea:focus {
+      border-bottom-color: var(--primary);
+    }
+    input::placeholder, textarea::placeholder {
+      color: var(--text-light);
+    }
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+      line-height: 1.6;
+    }
+
+    /* Multiple choice */
+    .choices {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+    .choice {
+      padding: 0.8rem 1.2rem;
+      border: 2px solid var(--border);
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .choice:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+    .choice.selected {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+    .choice-key {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 600;
+      width: 1.5rem;
+      height: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 0.25rem;
+      flex-shrink: 0;
+    }
+    .choice.selected .choice-key {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+    }
+
+    /* Navigation */
+    .nav {
+      margin-top: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .btn {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 0.7rem 1.8rem;
+      border: none;
+      border-radius: 0.4rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover {
+      background: var(--primary-hover);
+    }
+    .btn-primary:disabled {
+      background: var(--border);
+      color: var(--text-light);
+      cursor: not-allowed;
+    }
+    .btn-back {
+      background: transparent;
+      color: var(--text-muted);
+      padding: 0.7rem 1rem;
+    }
+    .btn-back:hover {
+      color: var(--text);
+    }
+    .keyboard-hint {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      margin-left: auto;
+    }
+
+    /* Error */
+    .error-msg {
+      font-size: 0.8rem;
+      color: var(--error);
+      margin-top: 0.5rem;
+      display: none;
+    }
+    .error-msg.visible {
+      display: block;
+    }
+
+    /* Welcome screen */
+    .welcome .q-text {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    /* End screen */
+    .end-screen .q-text {
+      font-size: 2rem;
+      color: var(--success);
+    }
+    .end-screen .q-hint {
+      font-size: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Closed state */
+    .closed-screen .q-text {
+      font-size: 1.8rem;
+    }
+    .closed-screen input {
+      margin-top: 1rem;
+    }
+
+    /* Submitting state */
+    .submitting .btn-primary {
+      position: relative;
+      color: transparent;
+    }
+    .submitting .btn-primary::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 1rem; height: 1rem;
+      margin: -0.5rem 0 0 -0.5rem;
+      border: 2px solid #fff;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Logo */
+    .form-logo {
+      font-family: 'Clash Display', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--text);
+      position: fixed;
+      top: 1.5rem;
+      left: 2rem;
+      text-decoration: none;
+    }
+    .form-logo span { color: var(--primary); }
+
+    /* Responsive */
+    @media (max-width: 600px) {
+      body { padding: 1.5rem; }
+      .q-text { font-size: 1.3rem; }
+      .welcome .q-text { font-size: 1.6rem; }
+      .keyboard-hint { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<a href="index.html" class="form-logo">infinitra<span>.build</span></a>
+
+<div class="form-container">
+  <div class="progress">
+    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+  </div>
+
+  <!-- Slide 0: Welcome -->
+  <div class="slide welcome active" data-slide="0">
+    <p class="q-text">Let's get to know you.</p>
+    <p class="q-hint">This takes about 5 minutes. Be honest — we read every word.</p>
+    <div class="nav">
+      <button class="btn btn-primary" onclick="nextSlide()">Start →</button>
+    </div>
+  </div>
+
+  <!-- Slide 1: Name -->
+  <div class="slide" data-slide="1">
+    <span class="q-num">1 / 7</span>
+    <p class="q-text">What's your name?</p>
+    <input type="text" id="name" placeholder="First and last name" autofocus>
+    <p class="error-msg" id="error-name">Please enter your name.</p>
+    <div class="nav">
+      <button class="btn btn-back" onclick="prevSlide()">← Back</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Next →</button>
+      <span class="keyboard-hint">Press Enter ↵</span>
+    </div>
+  </div>
+
+  <!-- Slide 2: Phone -->
+  <div class="slide" data-slide="2">
+    <span class="q-num">2 / 7</span>
+    <p class="q-text">Your WhatsApp number?</p>
+    <p class="q-hint">We'll call you on this number.</p>
+    <input type="tel" id="phone" placeholder="10-digit mobile number">
+    <p class="error-msg" id="error-phone">Please enter a valid 10-digit number.</p>
+    <div class="nav">
+      <button class="btn btn-back" onclick="prevSlide()">← Back</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Next →</button>
+      <span class="keyboard-hint">Press Enter ↵</span>
+    </div>
+  </div>
+
+  <!-- Slide 3: Email -->
+  <div class="slide" data-slide="3">
+    <span class="q-num">3 / 7</span>
+    <p class="q-text">Email address?</p>
+    <input type="email" id="email" placeholder="your@email.com">
+    <p class="error-msg" id="error-email">Please enter a valid email.</p>
+    <div class="nav">
+      <button class="btn btn-back" onclick="prevSlide()">← Back</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Next →</button>
+      <span class="keyboard-hint">Press Enter ↵</span>
+    </div>
+  </div>
+
+  <!-- Slide 4: Location -->
+  <div class="slide" data-slide="4">
+    <span class="q-num">4 / 7</span>
+    <p class="q-text">Where are you based?</p>
+    <p class="q-hint">City or town.</p>
+    <input type="text" id="location" placeholder="e.g. Kurnool, Nandyal, Nandikotkur, Dhone">
+    <p class="error-msg" id="error-location">Please enter your location.</p>
+    <div class="nav">
+      <button class="btn btn-back" onclick="prevSlide()">← Back</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Next →</button>
+      <span class="keyboard-hint">Press Enter ↵</span>
+    </div>
+  </div>
+
+  <!-- Slide 5: Current situation -->
+  <div class="slide" data-slide="5">
+    <span class="q-num">5 / 7</span>
+    <p class="q-text">What are you doing right now?</p>
+    <div class="choices" id="situation-choices">
+      <div class="choice" data-value="Student" onclick="selectChoice(this)">
+        <span class="choice-key">A</span> Student
+      </div>
+      <div class="choice" data-value="Graduate (looking for work)" onclick="selectChoice(this)">
+        <span class="choice-key">B</span> Graduate — looking for work
+      </div>
+      <div class="choice" data-value="Working (want to switch)" onclick="selectChoice(this)">
+        <span class="choice-key">C</span> Working — want to switch
+      </div>
+      <div class="choice" data-value="Something else" onclick="selectChoice(this)">
+        <span class="choice-key">D</span> Something else
+      </div>
+    </div>
+    <p class="error-msg" id="error-situation">Please select one.</p>
+    <div class="nav">
+      <button class="btn btn-back" onclick="prevSlide()">← Back</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Next →</button>
+    </div>
+  </div>
+
+  <!-- Slide 6: Why build -->
+  <div class="slide" data-slide="6">
+    <span class="q-num">6 / 7</span>
+    <p class="q-text">Why do you want to build?</p>
+    <p class="q-hint">Not "why this program" — why do YOU want to build things? 2–3 sentences is enough.</p>
+    <textarea id="whyBuild" placeholder="Write honestly. There's no right answer."></textarea>
+    <p class="error-msg" id="error-whyBuild">Please write at least a couple of sentences.</p>
+    <div class="nav">
+      <button class="btn btn-back" onclick="prevSlide()">← Back</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Next →</button>
+    </div>
+  </div>
+
+  <!-- Slide 7: Hard thing -->
+  <div class="slide" data-slide="7">
+    <span class="q-num">7 / 7</span>
+    <p class="q-text">Tell us about something hard you figured out on your own.</p>
+    <p class="q-hint">Anything — not just tech. A problem you solved, something you taught yourself, a situation you navigated. 2–3 sentences.</p>
+    <textarea id="hardThing" placeholder="What was it? How did you figure it out?"></textarea>
+    <p class="error-msg" id="error-hardThing">Please write at least a couple of sentences.</p>
+    <div class="nav">
+      <button class="btn btn-back" onclick="prevSlide()">← Back</button>
+      <button class="btn btn-primary" onclick="nextSlide()">Next →</button>
+    </div>
+  </div>
+
+  <!-- Slide 8: Source (not required) -->
+  <div class="slide" data-slide="8">
+    <span class="q-num">Almost done</span>
+    <p class="q-text">How did you hear about us?</p>
+    <div class="choices" id="source-choices">
+      <div class="choice" data-value="Flyer / poster" onclick="selectChoice(this)">
+        <span class="choice-key">A</span> Flyer / poster
+      </div>
+      <div class="choice" data-value="Friend / word of mouth" onclick="selectChoice(this)">
+        <span class="choice-key">B</span> Friend / word of mouth
+      </div>
+      <div class="choice" data-value="Instagram" onclick="selectChoice(this)">
+        <span class="choice-key">C</span> Instagram
+      </div>
+      <div class="choice" data-value="WhatsApp" onclick="selectChoice(this)">
+        <span class="choice-key">D</span> WhatsApp
+      </div>
+      <div class="choice" data-value="Other" onclick="selectChoice(this)">
+        <span class="choice-key">E</span> Other
+      </div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-back" onclick="prevSlide()">← Back</button>
+      <button class="btn btn-primary" id="submitBtn" onclick="submitForm()">Submit →</button>
+    </div>
+  </div>
+
+  <!-- Slide 9: Success -->
+  <div class="slide end-screen" data-slide="9">
+    <p class="q-text">You're in the pipeline.</p>
+    <p class="q-hint">We'll call you within a week to talk about the program, answer questions, share fee details, and schedule your evaluation.<br><br>Keep your phone on. Until then — keep being curious.</p>
+  </div>
+
+  <!-- Closed state (shown when applications are closed) -->
+  <div class="slide closed-screen" data-slide="closed" style="display:none;">
+    <p class="q-text">Applications are closed.</p>
+    <p class="q-hint" id="closed-message"></p>
+    <input type="email" id="waitlist-email" placeholder="Your email — we'll notify you">
+    <div class="nav">
+      <button class="btn btn-primary" onclick="submitWaitlist()">Notify me →</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="config.js"></script>
+<script>
+  // --- Theme persistence (matches index.html selection) ---
+  (function() {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+  })();
+
+  // --- State ---
+  let currentSlide = 0;
+  let formData = {};
+  const totalSlides = 8; // excluding welcome and end
+
+  // --- Init ---
+  document.addEventListener('DOMContentLoaded', () => {
+    // Check if already applied
+    if (localStorage.getItem('infinitra_applied')) {
+      document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+      const endSlide = document.querySelector('[data-slide="9"]');
+      endSlide.classList.add('active');
+      endSlide.querySelector('.q-text').textContent = "You've already applied.";
+      endSlide.querySelector('.q-hint').innerHTML = "We received your application. We'll call you within a week.<br><br>If you haven't heard from us, reach out at the same number you applied with.";
+      document.getElementById('progressBar').style.width = '100%';
+      return;
+    }
+
+    const status = getApplicationStatus();
+    if (!status.open) {
+      // Hide all slides, show closed screen
+      document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+      const closedSlide = document.querySelector('[data-slide="closed"]');
+      closedSlide.style.display = 'flex';
+      closedSlide.classList.add('active');
+      document.getElementById('closed-message').textContent = status.message;
+      document.getElementById('progressBar').style.width = '0%';
+      return;
+    }
+  });
+
+  // --- Navigation ---
+  function nextSlide() {
+    if (!validateCurrent()) return;
+    saveCurrentData();
+    currentSlide++;
+    showSlide(currentSlide);
+  }
+
+  function prevSlide() {
+    if (currentSlide > 0) {
+      currentSlide--;
+      showSlide(currentSlide);
+    }
+  }
+
+  function showSlide(n) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    const target = document.querySelector(`[data-slide="${n}"]`);
+    if (target) {
+      target.classList.add('active');
+      // Focus first input
+      const input = target.querySelector('input, textarea');
+      if (input) setTimeout(() => input.focus(), 100);
+    }
+    // Update progress
+    const pct = Math.min((n / totalSlides) * 100, 100);
+    document.getElementById('progressBar').style.width = pct + '%';
+  }
+
+  // --- Validation ---
+  function validateCurrent() {
+    clearErrors();
+    switch (currentSlide) {
+      case 1: return validateRequired('name', 'error-name');
+      case 2: return validatePhone();
+      case 3: return validateEmail();
+      case 4: return validateRequired('location', 'error-location');
+      case 5: return validateChoice('situation');
+      case 6: return validateMinLength('whyBuild', 20, 'error-whyBuild');
+      case 7: return validateMinLength('hardThing', 20, 'error-hardThing');
+      default: return true;
+    }
+  }
+
+  function validateRequired(id, errorId) {
+    const val = document.getElementById(id).value.trim();
+    if (!val) { showError(errorId); return false; }
+    return true;
+  }
+
+  function validatePhone() {
+    const val = document.getElementById('phone').value.trim().replace(/\D/g, '');
+    if (val.length !== 10) { showError('error-phone'); return false; }
+    return true;
+  }
+
+  function validateEmail() {
+    const val = document.getElementById('email').value.trim();
+    if (!val || !val.includes('@') || !val.includes('.')) { showError('error-email'); return false; }
+    return true;
+  }
+
+  function validateChoice(group) {
+    const selected = document.querySelector(`#${group}-choices .choice.selected`);
+    if (!selected) { showError(`error-${group}`); return false; }
+    return true;
+  }
+
+  function validateMinLength(id, min, errorId) {
+    const val = document.getElementById(id).value.trim();
+    if (val.length < min) { showError(errorId); return false; }
+    return true;
+  }
+
+  function showError(id) {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('visible');
+  }
+
+  function clearErrors() {
+    document.querySelectorAll('.error-msg').forEach(e => e.classList.remove('visible'));
+  }
+
+  // --- Data collection ---
+  function saveCurrentData() {
+    switch (currentSlide) {
+      case 1: formData.name = document.getElementById('name').value.trim(); break;
+      case 2: formData.phone = document.getElementById('phone').value.trim(); break;
+      case 3: formData.email = document.getElementById('email').value.trim(); break;
+      case 4: formData.location = document.getElementById('location').value.trim(); break;
+      case 5:
+        const sitChoice = document.querySelector('#situation-choices .choice.selected');
+        formData.situation = sitChoice ? sitChoice.dataset.value : '';
+        break;
+      case 6: formData.whyBuild = document.getElementById('whyBuild').value.trim(); break;
+      case 7: formData.hardThing = document.getElementById('hardThing').value.trim(); break;
+      case 8:
+        const srcChoice = document.querySelector('#source-choices .choice.selected');
+        formData.source = srcChoice ? srcChoice.dataset.value : 'Not specified';
+        break;
+    }
+  }
+
+  // --- Choice selection ---
+  function selectChoice(el) {
+    const parent = el.parentElement;
+    parent.querySelectorAll('.choice').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  // --- Submit ---
+  async function submitForm() {
+    saveCurrentData();
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.closest('.slide').classList.add('submitting');
+
+    try {
+      const payload = { type: "application", ...formData };
+
+      const response = await fetch(CONFIG.formEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        mode: 'no-cors' // Google Apps Script requires this
+      });
+
+      // no-cors means we can't read the response, but it went through
+      localStorage.setItem('infinitra_applied', 'true');
+      currentSlide = 9;
+      showSlide(9);
+      document.getElementById('progressBar').style.width = '100%';
+
+    } catch (error) {
+      // Still show success — Google Apps Script with no-cors may throw but still save
+      localStorage.setItem('infinitra_applied', 'true');
+      currentSlide = 9;
+      showSlide(9);
+      document.getElementById('progressBar').style.width = '100%';
+    }
+  }
+
+  // --- Waitlist ---
+  async function submitWaitlist() {
+    const email = document.getElementById('waitlist-email').value.trim();
+    if (!email || !email.includes('@')) return;
+
+    try {
+      await fetch(CONFIG.waitlistEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type: "waitlist", email }),
+        mode: 'no-cors'
+      });
+    } catch (e) {}
+
+    document.querySelector('.closed-screen .q-text').textContent = "You're on the list.";
+    document.querySelector('.closed-screen .q-hint').textContent = "We'll email you when the next cohort opens.";
+    document.querySelector('.closed-screen .nav').style.display = 'none';
+    document.getElementById('waitlist-email').style.display = 'none';
+  }
+
+  // --- Keyboard navigation ---
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      const active = document.querySelector('.slide.active');
+      if (!active) return;
+      const textarea = active.querySelector('textarea');
+      if (textarea && document.activeElement === textarea) return; // allow Enter in textarea
+      e.preventDefault();
+      // If on submit slide, submit; otherwise next
+      if (currentSlide === 8) {
+        submitForm();
+      } else {
+        nextSlide();
+      }
+    }
+
+    // A/B/C/D/E for choices
+    const active = document.querySelector('.slide.active');
+    if (!active) return;
+    const choices = active.querySelectorAll('.choice');
+    if (choices.length === 0) return;
+    const keyMap = { a: 0, b: 1, c: 2, d: 3, e: 4 };
+    const idx = keyMap[e.key.toLowerCase()];
+    if (idx !== undefined && choices[idx]) {
+      selectChoice(choices[idx]);
+    }
+  });
+</script>
+
+</body>
+</html>
