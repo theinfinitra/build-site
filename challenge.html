@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Challenge — infinitra.build</title>
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #7c3aed;
+      --primary-hover: #6d28d9;
+      --primary-light: #f5f3ff;
+      --bg: #faf9f7;
+      --text: #1c1917;
+      --text-muted: #57534e;
+      --text-light: #78716c;
+      --border: #d6d3d1;
+      --error: #dc2626;
+      --success: #059669;
+    }
+
+    [data-theme="dark"] {
+      --primary: #84cc16;
+      --primary-hover: #65a30d;
+      --primary-light: #1a2e05;
+      --bg: #09090b;
+      --text: #fafafa;
+      --text-muted: #a1a1aa;
+      --text-light: #71717a;
+      --border: #3f3f46;
+      --error: #f87171;
+      --success: #4ade80;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --primary: #84cc16;
+        --primary-hover: #65a30d;
+        --primary-light: #1a2e05;
+        --bg: #09090b;
+        --text: #fafafa;
+        --text-muted: #a1a1aa;
+        --text-light: #71717a;
+        --border: #3f3f46;
+        --error: #f87171;
+        --success: #4ade80;
+      }
+    }
+
+    body {
+      font-family: 'Satoshi', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 620px;
+      min-height: 450px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header bar */
+    .challenge-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+    .logo {
+      font-family: 'Clash Display', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .logo span { color: var(--primary); }
+    .timer {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      background: var(--primary-light);
+      padding: 0.4rem 0.8rem;
+      border-radius: 0.3rem;
+    }
+    .timer.warning { color: var(--error); }
+
+    /* Progress */
+    .progress {
+      width: 100%;
+      height: 3px;
+      background: var(--border);
+      border-radius: 2px;
+      margin-bottom: 2.5rem;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background: var(--primary);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+
+    /* Slides */
+    .slide {
+      display: none;
+      flex-direction: column;
+      animation: fadeIn 0.3s ease;
+    }
+    .slide.active { display: flex; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Question meta */
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .q-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    .q-time {
+      font-size: 0.72rem;
+      color: var(--text-light);
+    }
+
+    /* Question title & prompt */
+    .q-title {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+    }
+    .q-instruction {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.2rem;
+      font-style: italic;
+    }
+    .q-prompt {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text);
+      margin-bottom: 1.5rem;
+      white-space: pre-wrap;
+    }
+
+    /* Answer textarea */
+    textarea {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 1rem;
+      padding: 1rem;
+      border: 2px solid var(--border);
+      border-radius: 0.5rem;
+      background: transparent;
+      color: var(--text);
+      outline: none;
+      width: 100%;
+      min-height: 140px;
+      resize: vertical;
+      line-height: 1.6;
+      transition: border-color 0.2s;
+    }
+    textarea:focus { border-color: var(--primary); }
+    textarea::placeholder { color: var(--text-light); }
+
+    /* Word count */
+    .word-count {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      margin-top: 0.4rem;
+      text-align: right;
+    }
+
+    /* Nav buttons */
+    .nav {
+      margin-top: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .btn {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 0.7rem 1.8rem;
+      border: none;
+      border-radius: 0.4rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+    .btn-primary:hover { background: var(--primary-hover); }
+    .btn-primary:disabled {
+      background: var(--border);
+      color: var(--text-light);
+      cursor: not-allowed;
+    }
+
+    /* Error */
+    .error-msg {
+      font-size: 0.8rem;
+      color: var(--error);
+      margin-top: 0.5rem;
+      display: none;
+    }
+    .error-msg.visible { display: block; }
+
+    /* Intro screen */
+    .intro-title {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    .intro-text {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+    .intro-text strong { color: var(--text); }
+    .intro-rules {
+      list-style: none;
+      margin-bottom: 1.5rem;
+    }
+    .intro-rules li {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      padding: 0.4rem 0;
+      padding-left: 1.2rem;
+      position: relative;
+    }
+    .intro-rules li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* End screen */
+    .end-title {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--success);
+      margin-bottom: 0.8rem;
+    }
+    .end-text {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* Already done */
+    .already-done .intro-title { color: var(--primary); }
+
+    /* Submitting */
+    .submitting .btn-primary {
+      position: relative;
+      color: transparent;
+    }
+    .submitting .btn-primary::after {
+      content: '';
+      position: absolute;
+      top: 50%; left: 50%;
+      width: 1rem; height: 1rem;
+      margin: -0.5rem 0 0 -0.5rem;
+      border: 2px solid #fff;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    @media (max-width: 600px) {
+      body { padding: 1.5rem; }
+      .intro-title, .end-title { font-size: 1.5rem; }
+      .q-title { font-size: 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="challenge-header">
+    <a href="index.html" class="logo">infinitra<span>.build</span></a>
+    <div class="timer" id="timer">--:--</div>
+  </div>
+
+  <div class="progress">
+    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+  </div>
+
+  <!-- Intro -->
+  <div class="slide active" data-slide="intro">
+    <h1 class="intro-title">Your challenge.</h1>
+    <p class="intro-text">
+      4 short questions. <strong>~18 minutes.</strong> Open-book — use Google, AI, anything.<br>
+      We're not testing what you know. We're watching how you think.
+    </p>
+    <ul class="intro-rules">
+      <li>Use any tool: Google, ChatGPT, Claude, friends — whatever helps</li>
+      <li>One question at a time. You can't go back.</li>
+      <li>Write honestly. Short and clear beats long and vague.</li>
+      <li>This challenge is unique to you.</li>
+    </ul>
+    <div class="nav">
+      <button class="btn btn-primary" onclick="startChallenge()">Begin →</button>
+    </div>
+  </div>
+
+  <!-- Questions (injected dynamically) -->
+  <div class="slide" data-slide="q1"></div>
+  <div class="slide" data-slide="q2"></div>
+  <div class="slide" data-slide="q3"></div>
+  <div class="slide" data-slide="q4"></div>
+
+  <!-- End -->
+  <div class="slide" data-slide="end">
+    <h1 class="end-title">Challenge complete.</h1>
+    <p class="end-text">
+      Your responses are saved. We'll review them and call you within a week to discuss next steps.<br><br>
+      Good work showing up. Most people don't.
+    </p>
+  </div>
+
+  <!-- Already completed -->
+  <div class="slide already-done" data-slide="done">
+    <h1 class="intro-title">You've already completed this.</h1>
+    <p class="intro-text">We have your challenge responses. We'll call you within a week.</p>
+  </div>
+
+  <!-- No access (no email param) -->
+  <div class="slide" data-slide="no-access">
+    <h1 class="intro-title">Apply first.</h1>
+    <p class="intro-text">You need to <a href="apply.html" style="color: var(--primary);">submit an application</a> before accessing the challenge.</p>
+  </div>
+
+</div>
+
+<script src="config.js"></script>
+<script src="questions.js"></script>
+<script>
+  // --- State ---
+  let candidateEmail = '';
+  let candidateQuestions = [];
+  let answers = {};
+  let startTime = null;
+  let timerInterval = null;
+  let currentQuestion = 0;
+  const TOTAL_QUESTIONS = 4;
+
+  // --- Theme persistence ---
+  (function() {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+  })();
+
+  // --- Init ---
+  document.addEventListener('DOMContentLoaded', () => {
+    // Get email from URL params
+    const params = new URLSearchParams(window.location.search);
+    candidateEmail = params.get('email') || '';
+
+    if (!candidateEmail) {
+      showSlide('no-access');
+      return;
+    }
+
+    // Check if already completed
+    if (localStorage.getItem('infinitra_challenge_' + candidateEmail)) {
+      showSlide('done');
+      return;
+    }
+
+    // Get personalized questions
+    candidateQuestions = getQuestionsForCandidate(candidateEmail);
+
+    // Render question slides
+    candidateQuestions.forEach((q, i) => {
+      const slide = document.querySelector(`[data-slide="q${i + 1}"]`);
+      slide.innerHTML = `
+        <div class="q-meta">
+          <span class="q-num">${i + 1} / ${TOTAL_QUESTIONS}</span>
+          <span class="q-time">${q.timeHint}</span>
+        </div>
+        <h2 class="q-title">${q.title}</h2>
+        <p class="q-instruction">${q.instruction}</p>
+        <p class="q-prompt">${q.prompt}</p>
+        <textarea id="answer-${i}" placeholder="Write your answer here..."></textarea>
+        <div class="word-count" id="wc-${i}">0 words</div>
+        <p class="error-msg" id="error-${i}">Please write at least a couple of sentences.</p>
+        <div class="nav">
+          <button class="btn btn-primary" onclick="${i < TOTAL_QUESTIONS - 1 ? 'nextQuestion()' : 'submitChallenge()'}">
+            ${i < TOTAL_QUESTIONS - 1 ? 'Next →' : 'Submit →'}
+          </button>
+        </div>
+      `;
+    });
+
+    // Set up word counters
+    for (let i = 0; i < TOTAL_QUESTIONS; i++) {
+      const textarea = document.getElementById(`answer-${i}`);
+      const wc = document.getElementById(`wc-${i}`);
+      textarea.addEventListener('input', () => {
+        const words = textarea.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+        wc.textContent = words + ' word' + (words !== 1 ? 's' : '');
+      });
+    }
+  });
+
+  // --- Start challenge ---
+  function startChallenge() {
+    startTime = Date.now();
+    showSlide('q1');
+    startTimer();
+    document.getElementById('progressBar').style.width = '25%';
+  }
+
+  // --- Timer ---
+  function startTimer() {
+    updateTimer();
+    timerInterval = setInterval(updateTimer, 1000);
+  }
+
+  function updateTimer() {
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    const min = Math.floor(elapsed / 60);
+    const sec = elapsed % 60;
+    const timerEl = document.getElementById('timer');
+    timerEl.textContent = `${min.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+
+    // Warning after 20 minutes
+    if (elapsed > 20 * 60) {
+      timerEl.classList.add('warning');
+    }
+  }
+
+  // --- Navigation ---
+  function showSlide(name) {
+    document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+    const target = document.querySelector(`[data-slide="${name}"]`);
+    if (target) {
+      target.classList.add('active');
+      const textarea = target.querySelector('textarea');
+      if (textarea) setTimeout(() => textarea.focus(), 100);
+    }
+  }
+
+  function nextQuestion() {
+    // Validate current answer
+    const textarea = document.getElementById(`answer-${currentQuestion}`);
+    const words = textarea.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+    if (words < 5) {
+      document.getElementById(`error-${currentQuestion}`).classList.add('visible');
+      return;
+    }
+    document.getElementById(`error-${currentQuestion}`).classList.remove('visible');
+
+    // Save answer
+    answers[candidateQuestions[currentQuestion].slotId] = {
+      variantId: candidateQuestions[currentQuestion].variantId,
+      answer: textarea.value.trim()
+    };
+
+    // Next
+    currentQuestion++;
+    showSlide(`q${currentQuestion + 1}`);
+    document.getElementById('progressBar').style.width = ((currentQuestion + 1) / TOTAL_QUESTIONS * 100) + '%';
+  }
+
+  // --- Submit ---
+  async function submitChallenge() {
+    // Validate last answer
+    const textarea = document.getElementById(`answer-${currentQuestion}`);
+    const words = textarea.value.trim().split(/\s+/).filter(w => w.length > 0).length;
+    if (words < 5) {
+      document.getElementById(`error-${currentQuestion}`).classList.add('visible');
+      return;
+    }
+    document.getElementById(`error-${currentQuestion}`).classList.remove('visible');
+
+    // Save last answer
+    answers[candidateQuestions[currentQuestion].slotId] = {
+      variantId: candidateQuestions[currentQuestion].variantId,
+      answer: textarea.value.trim()
+    };
+
+    // Calculate time taken
+    const timeTaken = Math.round((Date.now() - startTime) / 1000 / 60); // in minutes
+
+    // Disable button
+    const btn = document.querySelector('[data-slide="q4"] .btn-primary');
+    btn.disabled = true;
+    document.querySelector('[data-slide="q4"]').classList.add('submitting');
+
+    // Build payload
+    const payload = {
+      type: "challenge",
+      email: candidateEmail,
+      timeTaken: timeTaken,
+      questions: candidateQuestions.map(q => q.variantId).join(','),
+      research: answers.research ? answers.research.answer : '',
+      problem: answers.problem ? answers.problem.answer : '',
+      judgment: answers.judgment ? answers.judgment.answer : '',
+      grit: answers.grit ? answers.grit.answer : ''
+    };
+
+    try {
+      await fetch(CONFIG.formEndpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        mode: 'no-cors'
+      });
+    } catch (e) {}
+
+    // Mark as completed
+    localStorage.setItem('infinitra_challenge_' + candidateEmail, 'true');
+
+    // Stop timer
+    clearInterval(timerInterval);
+
+    // Show end screen
+    showSlide('end');
+    document.getElementById('progressBar').style.width = '100%';
+  }
+</script>
+
+</body>
+</html>

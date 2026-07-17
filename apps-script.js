@@ -40,6 +40,8 @@ function doPost(e) {
     
     if (data.type === "waitlist") {
       return handleWaitlist(ss, data);
+    } else if (data.type === "challenge") {
+      return handleChallenge(ss, data);
     } else {
       return handleApplication(ss, data);
     }
@@ -111,6 +113,33 @@ function handleWaitlist(ss, data) {
   
   return ContentService
     .createTextOutput(JSON.stringify({ status: "success", message: "Added to waitlist" }))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function handleChallenge(ss, data) {
+  var sheet = ss.getSheetByName("Challenges");
+  
+  if (!sheet) {
+    // Create the sheet if it doesn't exist
+    sheet = ss.insertSheet("Challenges");
+    sheet.appendRow(["Timestamp", "Email", "Questions", "Time (min)", "Research", "Problem", "Judgment", "Grit"]);
+  }
+  
+  const timestamp = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
+  
+  sheet.appendRow([
+    timestamp,
+    data.email || "",
+    data.questions || "",
+    data.timeTaken || "",
+    data.research || "",
+    data.problem || "",
+    data.judgment || "",
+    data.grit || ""
+  ]);
+  
+  return ContentService
+    .createTextOutput(JSON.stringify({ status: "success", message: "Challenge saved" }))
     .setMimeType(ContentService.MimeType.JSON);
 }
 

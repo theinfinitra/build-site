@@ -469,7 +469,10 @@
   <!-- Slide 9: Success -->
   <div class="slide end-screen" data-slide="9">
     <p class="q-text">You're in the pipeline.</p>
-    <p class="q-hint">We'll call you within a week to talk about the program, answer questions, share fee details, and schedule your evaluation.<br><br>Keep your phone on. Until then — keep being curious.</p>
+    <p class="q-hint">One more step: <strong>complete a short challenge</strong> within 24 hours. It takes about 18 minutes. Open-book — use any tool you want.<br><br>We'll call you within a week to talk about the program, answer questions, share fee details, and schedule your evaluation.</p>
+    <div class="nav" style="margin-top: 1.5rem;">
+      <a id="challenge-link" href="#" class="btn btn-primary" style="text-decoration: none;">Start Challenge →</a>
+    </div>
   </div>
 
   <!-- Closed state (shown when applications are closed) -->
@@ -504,8 +507,17 @@
       document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
       const endSlide = document.querySelector('[data-slide="9"]');
       endSlide.classList.add('active');
-      endSlide.querySelector('.q-text').textContent = "You've already applied.";
-      endSlide.querySelector('.q-hint').innerHTML = "We received your application. We'll call you within a week.<br><br>If you haven't heard from us, reach out at the same number you applied with.";
+      const email = localStorage.getItem('infinitra_email') || '';
+      const challengeDone = localStorage.getItem('infinitra_challenge_' + email);
+      if (challengeDone) {
+        endSlide.querySelector('.q-text').textContent = "You've already applied.";
+        endSlide.querySelector('.q-hint').innerHTML = "Application and challenge both done. We'll call you within a week.";
+        endSlide.querySelector('.nav').style.display = 'none';
+      } else {
+        endSlide.querySelector('.q-text').textContent = "You've already applied.";
+        endSlide.querySelector('.q-hint').innerHTML = "Still need to complete your challenge? You have 24 hours from when you applied.";
+        document.getElementById('challenge-link').href = 'challenge.html?email=' + encodeURIComponent(email);
+      }
       document.getElementById('progressBar').style.width = '100%';
       return;
     }
@@ -652,6 +664,8 @@
 
       // no-cors means we can't read the response, but it went through
       localStorage.setItem('infinitra_applied', 'true');
+      localStorage.setItem('infinitra_email', formData.email);
+      document.getElementById('challenge-link').href = 'challenge.html?email=' + encodeURIComponent(formData.email);
       currentSlide = 9;
       showSlide(9);
       document.getElementById('progressBar').style.width = '100%';
@@ -659,6 +673,8 @@
     } catch (error) {
       // Still show success — Google Apps Script with no-cors may throw but still save
       localStorage.setItem('infinitra_applied', 'true');
+      localStorage.setItem('infinitra_email', formData.email);
+      document.getElementById('challenge-link').href = 'challenge.html?email=' + encodeURIComponent(formData.email);
       currentSlide = 9;
       showSlide(9);
       document.getElementById('progressBar').style.width = '100%';
