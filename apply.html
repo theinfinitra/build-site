@@ -509,13 +509,20 @@
       endSlide.classList.add('active');
       const email = localStorage.getItem('infinitra_email') || '';
       const challengeDone = localStorage.getItem('infinitra_challenge_' + email);
+      const applyTime = parseInt(localStorage.getItem('infinitra_applied_time') || '0');
+      const hoursElapsed = (Date.now() - applyTime) / (1000 * 60 * 60);
+
       if (challengeDone) {
-        endSlide.querySelector('.q-text').textContent = "You've already applied.";
-        endSlide.querySelector('.q-hint').innerHTML = "Application and challenge both done. We'll call you within a week.";
+        endSlide.querySelector('.q-text').textContent = "All done.";
+        endSlide.querySelector('.q-hint').innerHTML = "Application and challenge complete. We'll call you within a week.";
+        endSlide.querySelector('.nav').style.display = 'none';
+      } else if (hoursElapsed > 24) {
+        endSlide.querySelector('.q-text').textContent = "Challenge window closed.";
+        endSlide.querySelector('.q-hint').innerHTML = "Your 24-hour window to complete the challenge has passed. We'll still review your application and may reach out.";
         endSlide.querySelector('.nav').style.display = 'none';
       } else {
         endSlide.querySelector('.q-text').textContent = "You've already applied.";
-        endSlide.querySelector('.q-hint').innerHTML = "Still need to complete your challenge? You have 24 hours from when you applied.";
+        endSlide.querySelector('.q-hint').innerHTML = "Still need to complete your challenge? You have " + Math.round(24 - hoursElapsed) + " hours left.";
         document.getElementById('challenge-link').href = 'challenge.html?email=' + encodeURIComponent(email);
       }
       document.getElementById('progressBar').style.width = '100%';
@@ -664,6 +671,7 @@
 
       // no-cors means we can't read the response, but it went through
       localStorage.setItem('infinitra_applied', 'true');
+      localStorage.setItem('infinitra_applied_time', Date.now().toString());
       localStorage.setItem('infinitra_email', formData.email);
       document.getElementById('challenge-link').href = 'challenge.html?email=' + encodeURIComponent(formData.email);
       currentSlide = 9;
@@ -673,6 +681,7 @@
     } catch (error) {
       // Still show success — Google Apps Script with no-cors may throw but still save
       localStorage.setItem('infinitra_applied', 'true');
+      localStorage.setItem('infinitra_applied_time', Date.now().toString());
       localStorage.setItem('infinitra_email', formData.email);
       document.getElementById('challenge-link').href = 'challenge.html?email=' + encodeURIComponent(formData.email);
       currentSlide = 9;

@@ -381,9 +381,9 @@
 
   // --- Init ---
   document.addEventListener('DOMContentLoaded', () => {
-    // Get email from URL params
+    // Get email from URL params or localStorage
     const params = new URLSearchParams(window.location.search);
-    candidateEmail = params.get('email') || '';
+    candidateEmail = params.get('email') || localStorage.getItem('infinitra_email') || '';
 
     if (!candidateEmail) {
       showSlide('no-access');
@@ -394,6 +394,18 @@
     if (localStorage.getItem('infinitra_challenge_' + candidateEmail)) {
       showSlide('done');
       return;
+    }
+
+    // Check 24-hour expiry
+    const applyTime = parseInt(localStorage.getItem('infinitra_applied_time') || '0');
+    if (applyTime > 0) {
+      const hoursElapsed = (Date.now() - applyTime) / (1000 * 60 * 60);
+      if (hoursElapsed > 24) {
+        document.querySelector('[data-slide="no-access"] .intro-title').textContent = "Time's up.";
+        document.querySelector('[data-slide="no-access"] .intro-text').innerHTML = "Your 24-hour window to complete the challenge has passed. We'll still review your application and may reach out.";
+        showSlide('no-access');
+        return;
+      }
     }
 
     // Get personalized questions
@@ -526,7 +538,7 @@
       research: answers.research ? answers.research.answer : '',
       problem: answers.problem ? answers.problem.answer : '',
       judgment: answers.judgment ? answers.judgment.answer : '',
-      grit: answers.grit ? answers.grit.answer : ''
+      apply: answers.apply ? answers.apply.answer : ''
     };
 
     try {

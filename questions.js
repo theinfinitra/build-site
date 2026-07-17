@@ -88,26 +88,26 @@ const QUESTIONS = {
       ]
     },
     {
-      id: "grit",
-      title: "When You're Stuck",
-      timeHint: "~3 minutes",
-      instruction: "Be specific. Generic answers like 'try harder' won't do.",
+      id: "apply",
+      title: "Use a Tool",
+      timeHint: "~5 minutes",
+      instruction: "Actually do this right now. Use any AI tool (ChatGPT, Google Gemini, Claude — whatever you have access to).",
       variants: [
         {
-          id: "g1",
-          prompt: "You're trying to figure something out. You've Googled it, asked ChatGPT, and watched 2 YouTube videos — but nothing is working. Describe 3 specific things you'd try next."
+          id: "a1",
+          prompt: "Open any AI tool. Ask it: \"What is an API? Explain like I'm 15.\" Read the answer. Now, in your own words, explain what you understood — as if explaining to a friend. Then: what did the AI's explanation miss or get wrong?"
         },
         {
-          id: "g2",
-          prompt: "You're working on a task and you realize you're completely on the wrong track — the last hour of work might be wasted. What do you do? Describe your thought process in 3-4 sentences."
+          id: "a2",
+          prompt: "Open any AI tool. Ask it: \"What does a software developer actually do all day?\" Read the answer. Now: what surprised you? What sounds boring? What sounds exciting? Write in your own words — not what the AI said."
         },
         {
-          id: "g3",
-          prompt: "You're learning something new and you understand the concept, but every time you try to apply it, you get stuck. Describe 3 specific strategies you'd use to get unstuck."
+          id: "a3",
+          prompt: "Open any AI tool. Ask it: \"How does Netflix decide what to recommend to each person?\" Read the answer. Now explain it in 3-4 simple sentences as if telling your mother. What part was hardest to understand?"
         },
         {
-          id: "g4",
-          prompt: "You're in a group project and no one agrees on the approach. Two people want to do it one way, one person wants to do it differently, and you have your own idea. What do you do? 3-4 sentences."
+          id: "a4",
+          prompt: "Open any AI tool. Ask it: \"How do UPI payments work behind the scenes?\" Read the answer. Now explain the basic idea in 3-4 sentences using a simple analogy (like comparing it to something from daily life). What did you find surprising?"
         }
       ]
     }

@@ -122,7 +122,7 @@ function handleChallenge(ss, data) {
   if (!sheet) {
     // Create the sheet if it doesn't exist
     sheet = ss.insertSheet("Challenges");
-    sheet.appendRow(["Timestamp", "Email", "Questions", "Time (min)", "Research", "Problem", "Judgment", "Grit"]);
+    sheet.appendRow(["Timestamp", "Email", "Questions", "Time (min)", "Research", "Problem", "Judgment", "Apply (AI Usage)"]);
   }
   
   const timestamp = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" });
@@ -135,7 +135,7 @@ function handleChallenge(ss, data) {
     data.research || "",
     data.problem || "",
     data.judgment || "",
-    data.grit || ""
+    data.apply || ""
   ]);
   
   return ContentService
