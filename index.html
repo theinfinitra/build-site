@@ -434,11 +434,17 @@
 
     /* Responsive */
     @media (max-width: 600px) {
-      section { padding: 3rem 0; }
+      section { padding: 3rem 0 2.5rem; }
       .hero { padding: 3rem 0 2rem; }
       .phase-weeks { grid-template-columns: 1fr; }
       .outcomes-grid { grid-template-columns: 1fr; }
       footer .container { flex-direction: column; text-align: center; }
+      .nav-link { display: none; }
+      .nav-right { gap: 0.5rem; }
+      .hero h1 { font-size: 1.8rem; }
+      .section-heading { font-size: 1.4rem; }
+      .p-step-text h3 { font-size: 1rem; }
+      .cta-section h2 { font-size: 1.5rem; }
     }
   </style>
 </head>
@@ -612,6 +618,17 @@
 <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0})" aria-label="Back to top">
   <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
 </button>
+
+<!-- About -->
+<section style="border-top: 1px solid var(--border);">
+  <div class="container" style="text-align: center; max-width: 560px;">
+    <p class="section-label">Who We Are</p>
+    <p style="font-size: 1rem; color: var(--text-muted); line-height: 1.7;">
+      Infinitra builds AI-powered software for businesses across India and the US. We're an AWS Advanced Tier Partner, founded by leaders who built systems at Amazon. Now we're growing our team — starting with people who want to learn by building.
+    </p>
+    <a href="https://theinfinitra.com" target="_blank" style="display: inline-block; margin-top: 1rem; font-size: 0.85rem; color: var(--primary); font-weight: 600; text-decoration: none;">theinfinitra.com →</a>
+  </div>
+</section>
 
 <!-- Footer -->
 <footer>
