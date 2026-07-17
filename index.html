@@ -56,6 +56,8 @@
       color: var(--text);
       line-height: 1.6;
       font-size: 16px;
+      scroll-behavior: smooth;
+      scroll-padding-top: 4rem;
     }
 
     /* Layout */
@@ -105,6 +107,59 @@
       transition: background 0.15s;
     }
     .nav-btn:hover { background: var(--primary-hover); }
+
+    /* Nav links */
+    .nav-link {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      padding: 0.3rem 0;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .nav-link:hover { color: var(--text); }
+    .nav-link.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    /* Back to top */
+    .back-to-top {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 2.5rem;
+      height: 2.5rem;
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s, transform 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      z-index: 99;
+    }
+    .back-to-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    .back-to-top:hover { transform: translateY(-2px); }
+    .back-to-top svg {
+      width: 1.2rem;
+      height: 1.2rem;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2.5;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
 
     /* Theme toggle */
     .theme-toggle {
@@ -394,6 +449,9 @@
   <div class="container">
     <a href="/" class="logo">infinitra<span>.build</span></a>
     <div class="nav-right">
+      <a href="#path" class="nav-link">Path</a>
+      <a href="#build" class="nav-link">Build</a>
+      <a href="#proof" class="nav-link">Proof</a>
       <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
         <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
         <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
@@ -415,7 +473,7 @@
 </section>
 
 <!-- How it works -->
-<section>
+<section id="path">
   <div class="container">
     <p class="section-label">How It Works</p>
     <h2 class="section-heading">Five steps to a career.</h2>
@@ -462,7 +520,7 @@
 </section>
 
 <!-- Curriculum -->
-<section style="background: var(--card-bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+<section id="build" style="background: var(--card-bg); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
   <div class="container">
     <p class="section-label">What You Build</p>
     <h2 class="section-heading">12 weeks. Three phases. All building.</h2>
@@ -513,7 +571,7 @@
 </section>
 
 <!-- Outcomes -->
-<section>
+<section id="proof">
   <div class="container">
     <p class="section-label">What You Leave With</p>
     <h2 class="section-heading">A career or clarity, not just a certificate.</h2>
@@ -549,6 +607,11 @@
     <p class="cta-fee">Apply before Sep 5, 2026 · Program fee applies — details on application</p>
   </div>
 </section>
+
+<!-- Back to top -->
+<button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0})" aria-label="Back to top">
+  <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15"/></svg>
+</button>
 
 <!-- Footer -->
 <footer>
@@ -597,6 +660,35 @@
       });
       document.querySelector('.hero-meta').textContent = 'Next cohort coming soon.';
       document.querySelector('.cta-fee').textContent = 'Leave your email on the application page to be notified about the next cohort.';
+    }
+  });
+
+  // --- Scroll spy (highlight active nav link) ---
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+  const backToTop = document.getElementById('backToTop');
+
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY + 100;
+
+    // Highlight active section
+    sections.forEach(section => {
+      const top = section.offsetTop;
+      const height = section.offsetHeight;
+      const id = section.getAttribute('id');
+
+      if (scrollY >= top && scrollY < top + height) {
+        navLinks.forEach(link => link.classList.remove('active'));
+        const active = document.querySelector(`.nav-link[href="#${id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+
+    // Back to top visibility
+    if (window.scrollY > 300) {
+      backToTop.classList.add('visible');
+    } else {
+      backToTop.classList.remove('visible');
     }
   });
 </script>
