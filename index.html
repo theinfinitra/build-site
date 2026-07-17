@@ -433,18 +433,78 @@
     }
 
     /* Responsive */
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.3rem;
+    }
+    .hamburger svg {
+      width: 1.4rem;
+      height: 1.4rem;
+      stroke: var(--text);
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+    }
+
     @media (max-width: 600px) {
       section { padding: 3rem 0 2.5rem; }
       .hero { padding: 3rem 0 2rem; }
       .phase-weeks { grid-template-columns: 1fr; }
       .outcomes-grid { grid-template-columns: 1fr; }
       footer .container { flex-direction: column; text-align: center; }
-      .nav-link { display: none; }
-      .nav-right { gap: 0.5rem; }
       .hero h1 { font-size: 1.8rem; }
       .section-heading { font-size: 1.4rem; }
       .p-step-text h3 { font-size: 1rem; }
       .cta-section h2 { font-size: 1.5rem; }
+
+      .hamburger { display: block; }
+      .nav-link { display: none; }
+      .theme-toggle { display: none; }
+
+      .nav-right {
+        gap: 0.5rem;
+      }
+
+      /* Mobile menu */
+      .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: var(--bg);
+        z-index: 200;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+      }
+      .mobile-menu.open { display: flex; }
+      .mobile-menu a {
+        font-family: 'Clash Display', sans-serif;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text);
+        text-decoration: none;
+      }
+      .mobile-menu a:hover { color: var(--primary); }
+      .mobile-menu .close-btn {
+        position: absolute;
+        top: 1.5rem;
+        right: 1.5rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+      .mobile-menu .close-btn svg {
+        width: 1.5rem;
+        height: 1.5rem;
+        stroke: var(--text);
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+      }
     }
   </style>
 </head>
@@ -463,10 +523,25 @@
         <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
         <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
       </button>
+      <button class="hamburger" onclick="openMobileMenu()" aria-label="Open menu">
+        <svg viewBox="0 0 24 24"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
       <a href="apply.html" class="nav-btn" id="nav-apply-btn">Apply →</a>
     </div>
   </div>
 </nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <button class="close-btn" onclick="closeMobileMenu()" aria-label="Close menu">
+    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <a href="#path" onclick="closeMobileMenu()">Path</a>
+  <a href="#build" onclick="closeMobileMenu()">Build</a>
+  <a href="#proof" onclick="closeMobileMenu()">Proof</a>
+  <a href="#about" onclick="closeMobileMenu()">About</a>
+  <a href="apply.html" style="color: var(--primary);">Apply →</a>
+</div>
 
 <!-- Hero -->
 <section class="hero">
@@ -628,7 +703,8 @@
       Infinitra builds AI-powered software for businesses across India and the US. We're an AWS Advanced Tier Partner, founded by leaders who built systems at Amazon. Now we're growing our team — starting with people who want to learn by building.
     </p>
     <p style="font-size: 0.85rem; color: var(--text-light); margin-top: 1.2rem; line-height: 1.6;">
-      <strong style="color: var(--text-muted);">Studio:</strong> Venkata Ramana Colony Main Rd, Opp. HP Petrol Bunk, Ameen Abbas Nagar, Kurnool, Andhra Pradesh 518003
+      <strong style="color: var(--text-muted);">Studio:</strong> 306, Ameen Abbas Nagar Rd, Ameen Abbas Nagar, Kurnool, Andhra Pradesh 518003
+      <a href="https://www.google.com/maps/search/306+Ameen+Abbas+Nagar+Rd+Kurnool+518003" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: 600; margin-left: 0.3rem;">Open in Maps →</a>
     </p>
     <a href="https://theinfinitra.com" target="_blank" style="display: inline-block; margin-top: 1rem; font-size: 0.85rem; color: var(--primary); font-weight: 600; text-decoration: none;">theinfinitra.com →</a>
   </div>
@@ -660,6 +736,14 @@
       html.setAttribute('data-theme', 'dark');
       localStorage.setItem('theme', 'dark');
     }
+  }
+
+  // --- Mobile menu ---
+  function openMobileMenu() {
+    document.getElementById('mobileMenu').classList.add('open');
+  }
+  function closeMobileMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
   }
 
   // Apply saved theme on load
