@@ -541,8 +541,9 @@
       return;
     } else if (status.waitlist) {
       // Past deadline — form still works but show waitlist context
+      const deadlineStr = new Date(CONFIG.cohort.applicationDeadline).toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
       document.querySelector('[data-slide="0"] .q-text').textContent = "You're applying for the waitlist.";
-      document.querySelector('[data-slide="0"] .q-hint').textContent = "The Aug 31 deadline has passed, but we're still accepting applications. If a seat opens or for the next cohort — you'll be first in line. Same form, same challenge.";
+      document.querySelector('[data-slide="0"] .q-hint').textContent = `The ${deadlineStr} deadline has passed, but we're still accepting applications. If a seat opens or for the next cohort — you'll be first in line. Same form, same challenge.`;
     }
   });
 
@@ -584,8 +585,8 @@
       case 3: return validateEmail();
       case 4: return validateRequired('location', 'error-location');
       case 5: return validateChoice('situation');
-      case 6: return validateMinLength('whyBuild', 20, 'error-whyBuild');
-      case 7: return validateMinLength('hardThing', 20, 'error-hardThing');
+      case 6: return validateMinLength('whyBuild', 50, 'error-whyBuild');
+      case 7: return validateMinLength('hardThing', 50, 'error-hardThing');
       default: return true;
     }
   }

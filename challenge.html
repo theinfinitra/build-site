@@ -411,6 +411,12 @@
     // Get personalized questions
     candidateQuestions = getQuestionsForCandidate(candidateEmail);
 
+    // Check if there's saved progress — update intro button
+    const savedProgress = localStorage.getItem('infinitra_challenge_progress_' + candidateEmail);
+    if (savedProgress) {
+      document.querySelector('[data-slide="intro"] .btn-primary').textContent = 'Resume →';
+    }
+
     // Render question slides
     candidateQuestions.forEach((q, i) => {
       const slide = document.querySelector(`[data-slide="q${i + 1}"]`);
@@ -424,7 +430,7 @@
         <p class="q-prompt">${q.prompt}</p>
         <textarea id="answer-${i}" placeholder="Write your answer here..."></textarea>
         <div class="word-count" id="wc-${i}">0 words</div>
-        <p class="error-msg" id="error-${i}">Please write at least a couple of sentences.</p>
+        <p class="error-msg" id="error-${i}">Please write at least 2-3 sentences.</p>
         <div class="nav">
           <button class="btn btn-primary" onclick="${i < TOTAL_QUESTIONS - 1 ? 'nextQuestion()' : 'submitChallenge()'}">
             ${i < TOTAL_QUESTIONS - 1 ? 'Next →' : 'Submit →'}
@@ -446,10 +452,36 @@
 
   // --- Start challenge ---
   function startChallenge() {
-    startTime = Date.now();
-    showSlide('q1');
+    // Check if resuming
+    const savedStart = localStorage.getItem('infinitra_challenge_start_' + candidateEmail);
+    if (savedStart) {
+      startTime = parseInt(savedStart);
+    } else {
+      startTime = Date.now();
+      localStorage.setItem('infinitra_challenge_start_' + candidateEmail, startTime.toString());
+    }
+
+    // Restore saved answers and resume from where they left off
+    const savedProgress = localStorage.getItem('infinitra_challenge_progress_' + candidateEmail);
+    if (savedProgress) {
+      const progress = JSON.parse(savedProgress);
+      answers = progress.answers || {};
+      currentQuestion = progress.currentQuestion || 0;
+      // Fill in saved answers to textareas
+      for (let i = 0; i < currentQuestion; i++) {
+        const slotId = candidateQuestions[i].slotId;
+        if (answers[slotId]) {
+          const textarea = document.getElementById(`answer-${i}`);
+          if (textarea) textarea.value = answers[slotId].answer;
+        }
+      }
+      showSlide(`q${currentQuestion + 1}`);
+    } else {
+      showSlide('q1');
+    }
+
     startTimer();
-    document.getElementById('progressBar').style.width = '25%';
+    document.getElementById('progressBar').style.width = ((currentQuestion + 1) / TOTAL_QUESTIONS * 100) + '%';
   }
 
   // --- Timer ---
@@ -486,7 +518,7 @@
     // Validate current answer
     const textarea = document.getElementById(`answer-${currentQuestion}`);
     const words = textarea.value.trim().split(/\s+/).filter(w => w.length > 0).length;
-    if (words < 5) {
+    if (words < 15) {
       document.getElementById(`error-${currentQuestion}`).classList.add('visible');
       return;
     }
@@ -498,8 +530,14 @@
       answer: textarea.value.trim()
     };
 
-    // Next
+    // Persist progress
     currentQuestion++;
+    localStorage.setItem('infinitra_challenge_progress_' + candidateEmail, JSON.stringify({
+      answers: answers,
+      currentQuestion: currentQuestion
+    }));
+
+    // Next
     showSlide(`q${currentQuestion + 1}`);
     document.getElementById('progressBar').style.width = ((currentQuestion + 1) / TOTAL_QUESTIONS * 100) + '%';
   }
@@ -509,7 +547,7 @@
     // Validate last answer
     const textarea = document.getElementById(`answer-${currentQuestion}`);
     const words = textarea.value.trim().split(/\s+/).filter(w => w.length > 0).length;
-    if (words < 5) {
+    if (words < 15) {
       document.getElementById(`error-${currentQuestion}`).classList.add('visible');
       return;
     }
@@ -550,8 +588,10 @@
       });
     } catch (e) {}
 
-    // Mark as completed
+    // Mark as completed and clean up progress
     localStorage.setItem('infinitra_challenge_' + candidateEmail, 'true');
+    localStorage.removeItem('infinitra_challenge_start_' + candidateEmail);
+    localStorage.removeItem('infinitra_challenge_progress_' + candidateEmail);
 
     // Stop timer
     clearInterval(timerInterval);
