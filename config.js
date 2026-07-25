@@ -10,7 +10,7 @@ const CONFIG = {
     name: "September 2026",
     startDate: "2026-09-07",           // When the program starts
     applicationDeadline: "2026-08-31", // Last date to apply (YYYY-MM-DD)
-    seats: 10,
+    seats: 16,  // Maximum seats per cohort (display as "Limited seats" publicly)
   },
 
   // --- Application control ---
