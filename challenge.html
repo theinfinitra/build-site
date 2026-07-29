@@ -315,8 +315,13 @@
     <div class="progress-bar" id="progressBar" style="width: 0%"></div>
   </div>
 
+  <!-- Loading (shown while checking server) -->
+  <div class="slide active" data-slide="loading">
+    <p class="intro-text" style="text-align: center;">Checking...</p>
+  </div>
+
   <!-- Intro -->
-  <div class="slide active" data-slide="intro">
+  <div class="slide" data-slide="intro">
     <h1 class="intro-title">Your challenge.</h1>
     <p class="intro-text">
       4 short questions. <strong>~18 minutes.</strong> Open-book — use Google, AI, anything.<br>
@@ -381,7 +386,7 @@
   })();
 
   // --- Init ---
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('DOMContentLoaded', async () => {
     // Get email from URL params or localStorage
     const params = new URLSearchParams(window.location.search);
     candidateEmail = params.get('email') || localStorage.getItem('infinitra_email') || '';
@@ -391,8 +396,24 @@
       return;
     }
 
-    // Check if already completed
-    if (localStorage.getItem('infinitra_challenge_' + candidateEmail)) {
+    // Check if already completed — server-side first, then localStorage fallback
+    let serverCompleted = false;
+    try {
+      const checkUrl = CONFIG.formEndpoint + '?check=challenge&email=' + encodeURIComponent(candidateEmail);
+      const resp = await fetch(checkUrl);
+      if (resp.ok) {
+        const result = await resp.json();
+        serverCompleted = result.completed === true;
+      }
+    } catch (e) {
+      // Network error — fall back to localStorage check
+    }
+
+    if (serverCompleted || localStorage.getItem('infinitra_challenge_' + candidateEmail)) {
+      // Sync localStorage if server says completed but local doesn't know
+      if (serverCompleted) {
+        localStorage.setItem('infinitra_challenge_' + candidateEmail, 'true');
+      }
       showSlide('done');
       return;
     }
@@ -449,6 +470,9 @@
         wc.textContent = words + ' word' + (words !== 1 ? 's' : '');
       });
     }
+
+    // All checks passed — show intro
+    showSlide('intro');
   });
 
   // --- Start challenge ---

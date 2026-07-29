@@ -143,9 +143,48 @@ function handleChallenge(ss, data) {
     .setMimeType(ContentService.MimeType.JSON);
 }
 
-// Handle GET requests (for testing in browser)
+// Handle GET requests
+// - No params: health check
+// - ?check=challenge&email=x@y.com: check if candidate already submitted challenge
 function doGet(e) {
+  var params = e && e.parameter ? e.parameter : {};
+
+  // If no check param, return health status
+  if (!params.check) {
+    return ContentService
+      .createTextOutput(JSON.stringify({ status: "ok", message: "Infinitra Build form endpoint is live." }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  // Challenge completion check
+  if (params.check === "challenge" && params.email) {
+    var email = String(params.email).trim().toLowerCase();
+    var ss = getSpreadsheet();
+    var sheet = ss.getSheetByName("Challenges");
+
+    if (!sheet) {
+      return ContentService
+        .createTextOutput(JSON.stringify({ completed: false }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
+    var data = sheet.getDataRange().getValues();
+    // Email is in column B (index 1)
+    for (var i = 1; i < data.length; i++) {
+      if (String(data[i][1]).trim().toLowerCase() === email) {
+        return ContentService
+          .createTextOutput(JSON.stringify({ completed: true }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+    }
+
+    return ContentService
+      .createTextOutput(JSON.stringify({ completed: false }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+
+  // Unknown check type
   return ContentService
-    .createTextOutput(JSON.stringify({ status: "ok", message: "Infinitra Build form endpoint is live." }))
+    .createTextOutput(JSON.stringify({ status: "error", message: "Unknown check type" }))
     .setMimeType(ContentService.MimeType.JSON);
 }
