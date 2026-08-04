@@ -27,7 +27,7 @@ const QUESTIONS = {
         },
         {
           id: "r2",
-          prompt: "Find 2 real examples of AI being used in Indian schools or education right now (2026). For each, name the school or company and write 1 sentence about what the AI actually does."
+          prompt: "Find 2 real examples of AI being used in Indian schools or classrooms right now (2026 — not just an app or website, but used in a real school). For each, name the school or company and write 1 sentence about what the AI actually does."
         },
         {
           id: "r3",
@@ -35,7 +35,19 @@ const QUESTIONS = {
         },
         {
           id: "r4",
-          prompt: "Find 2 real examples of AI being used in Indian banks or financial services right now (2026). For each, name the bank or company and write 1 sentence about what the AI actually does."
+          prompt: "Find 2 real examples of AI being used in Indian banks or financial services right now (2026 — not chatbots). For each, name the bank or company and write 1 sentence about what the AI actually does."
+        },
+        {
+          id: "r5",
+          prompt: "Find 2 real examples of AI being used in Indian e-commerce or logistics right now (2026). For each, name the company and write 1 sentence about what the AI actually does."
+        },
+        {
+          id: "r6",
+          prompt: "Find 2 real examples of AI being used in Indian manufacturing or factories right now (2026). For each, name the company and write 1 sentence about what the AI actually does."
+        },
+        {
+          id: "r7",
+          prompt: "Find 2 real examples of AI being used by Indian government services or public sector right now (2026). For each, name the department or project and write 1 sentence about what the AI actually does."
         }
       ]
     },
@@ -60,6 +72,18 @@ const QUESTIONS = {
         {
           id: "p4",
           prompt: "A tuition teacher has 60 students across 4 batches. She can never remember who paid fees, who's absent often, or who's falling behind. She uses a notebook that's getting messy. Describe a simple system using only her phone. 3-4 sentences."
+        },
+        {
+          id: "p5",
+          prompt: "A small catering business gets orders via phone calls. The owner often forgets details (quantity, menu, delivery time) because she writes on loose papers that get lost. She has a smartphone but isn't very tech-savvy. Describe a simple system to help her track orders. 3-4 sentences."
+        },
+        {
+          id: "p6",
+          prompt: "A local library has 500 books but no catalog. Students come in and ask the librarian if a specific book is available — he checks manually, often taking 10 minutes. He has a phone with WhatsApp. Describe a simple system so students can check availability before visiting. 3-4 sentences."
+        },
+        {
+          id: "p7",
+          prompt: "An auto-rickshaw driver in Kurnool wants to get regular customers instead of waiting at the stand for hours. He has a basic smartphone with WhatsApp. Some of his passengers are daily commuters (same route, same time). Describe a simple system to help him build a regular customer base. 3-4 sentences."
         }
       ]
     },
@@ -83,7 +107,15 @@ const QUESTIONS = {
         },
         {
           id: "j4",
-          prompt: "Your friend finished a diploma and wants to get into tech. Four people give conflicting advice:\n\nA: \"Do a 6-month Java course at an institute.\"\nB: \"Learn Python from YouTube for free.\"\nC: \"Forget coding — learn digital marketing instead.\"\nD: \"Get any IT job first, even data entry. Learn on the job.\"\n\nHe has no coding experience, lives in Kurnool, and needs to earn within 6 months. What should he do FIRST, and why? 3-4 sentences."
+          prompt: "Your friend wants to start freelancing as a graphic designer. Four people give conflicting advice:\n\nA: \"Build a portfolio website first. No one hires without seeing work.\"\nB: \"Start on Fiverr immediately. Do cheap jobs to get reviews.\"\nC: \"DM local businesses on Instagram. Offer free logos to build trust.\"\nD: \"Learn UI/UX design instead — it pays 3x more than graphic design.\"\n\nShe knows Canva well, has done a few posters for college events, and wants to earn ₹10K/month within 3 months. What should she do FIRST, and why? 3-4 sentences."
+        },
+        {
+          id: "j5",
+          prompt: "Your friend wants to open a phone repair shop. Four people give conflicting advice:\n\nA: \"Get a certification course first. Customers trust credentials.\"\nB: \"Start repairing for friends and family. Build word-of-mouth.\"\nC: \"Rent a small shop in a busy area. Location is everything.\"\nD: \"Start a YouTube channel showing repairs. Get customers online.\"\n\nHe's good at fixing phones (learned from YouTube), has ₹20,000 saved, and lives in a small town. What should he do FIRST, and why? 3-4 sentences."
+        },
+        {
+          id: "j6",
+          prompt: "Your friend wants to earn money by tutoring online. Four people give conflicting advice:\n\nA: \"Post on social media daily. Build an audience first.\"\nB: \"Join a tutoring platform like Vedantu or Chegg. They send students.\"\nC: \"Offer free trial classes. Convert them to paid later.\"\nD: \"Print pamphlets and distribute in your colony. Online is overcrowded.\"\n\nShe's good at math, has a laptop with a camera, and is available 4 hours/day. What should she do FIRST, and why? 3-4 sentences."
         }
       ]
     },
@@ -99,7 +131,7 @@ const QUESTIONS = {
         },
         {
           id: "a2",
-          prompt: "Open any AI tool. Ask it: \"What does a software developer actually do all day?\" Read the answer. Now: what surprised you? What sounds boring? What sounds exciting? Write in your own words — not what the AI said."
+          prompt: "Open any AI tool. Ask it: \"What does a software developer actually do all day?\" Read the answer. Now: what surprised you? What sounds boring? What sounds exciting? Write in your own words — not what the AI said. What did the AI oversimplify or get wrong?"
         },
         {
           id: "a3",
@@ -108,6 +140,18 @@ const QUESTIONS = {
         {
           id: "a4",
           prompt: "Open any AI tool. Ask it: \"How do UPI payments work behind the scenes?\" Read the answer. Now explain the basic idea in 3-4 sentences using a simple analogy (like comparing it to something from daily life). What did you find surprising?"
+        },
+        {
+          id: "a5",
+          prompt: "Open any AI tool. Ask it: \"What is cloud computing? Explain simply.\" Read the answer. Now explain it in your own words as if telling a shopkeeper why it matters for his business. What did the AI's explanation assume you already knew?"
+        },
+        {
+          id: "a6",
+          prompt: "Open any AI tool. Ask it: \"How does Google Maps know about traffic jams in real time?\" Read the answer. Now explain it in 3-4 simple sentences to a friend who's never thought about it. What part of the AI's answer seemed incomplete or oversimplified?"
+        },
+        {
+          id: "a7",
+          prompt: "Open any AI tool. Ask it: \"What is machine learning? Explain with a real example.\" Read the answer. Now explain what you understood in your own words — use an example from your daily life, not the AI's example. What did the AI leave out?"
         }
       ]
     }
