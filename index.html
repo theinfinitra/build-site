@@ -390,19 +390,54 @@
       font-weight: 700;
       margin-bottom: 0.6rem;
     }
-    .cta-section p {
+    .cta-section > .container > p {
       font-size: 1rem;
       color: var(--text-muted);
-      margin-bottom: 1.5rem;
+      margin-bottom: 2rem;
     }
     .cta-section .hero-cta {
-      font-size: 1.1rem;
-      padding: 1rem 3rem;
+      font-size: 1rem;
+      padding: 0.9rem 2.5rem;
     }
     .cta-fee {
       margin-top: 0.8rem;
       font-size: 0.78rem;
       color: var(--text-light);
+    }
+
+    /* Two-path CTA */
+    .cta-paths {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: left;
+    }
+    .cta-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 2rem;
+    }
+    .cta-card:hover { border-color: var(--primary); }
+    .cta-card h3 {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .cta-card > p:first-of-type {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .cta-card .hero-cta {
+      margin-top: 1.2rem;
+    }
+
+    @media (max-width: 600px) {
+      .cta-paths { grid-template-columns: 1fr; }
     }
 
     /* Footer */
@@ -559,11 +594,13 @@
 <!-- Hero -->
 <section class="hero">
   <div class="container">
-    <h1>The career you want<br>isn't 4 years away.<br><span class="accent">Start building, get hired.</span></h1>
+    <h1>The career you want<br>isn't years away.<br><span class="accent">Start building, get hired.</span></h1>
     <p class="subtitle">A selective builder's program in Kurnool. 4 months of intensive mentoring — building AI-powered software from day one. Then a 2-month paid internship on real products. Top performers get hired full-time.</p>
     <p class="who-signal">We don't care what you studied. We care what you'll build.</p>
     <a href="apply.html" class="hero-cta" id="hero-apply-btn">Apply Now →</a>
-    <p class="hero-meta" id="hero-meta">Limited seats · Apply before Aug 31, 2026 · Starts Sep 7</p>
+    <p class="hero-meta" id="hero-meta">Limited seats · Apply before Aug 31, 2026 · Starts Sep 7·<a href="#cta"
+   style="color: var(--primary); text-decoration: none; font-weight: 600;"> Experienced? ↓</a></p>
+    
   </div>
 </section>
 
@@ -774,12 +811,27 @@
 </section>
 
 <!-- CTA -->
-<section class="cta-section">
+<section class="cta-section" id="cta">
   <div class="container">
-    <h2>Interested? Apply and show us what you've got.</h2>
-    <p>Apply and take the online challenge. Shortlisted candidates get invited to a half-day at our studio. We select for grit, not degrees.</p>
-    <a href="apply.html" class="hero-cta" id="cta-apply-btn">Apply Now →</a>
-    <p class="cta-fee" id="cta-fee">Applications open · Starts Sep 7, 2026</p>
+    <h2>Ready to start?</h2>
+    <p>Two paths. Same studio. Same mission.</p>
+
+    <div class="cta-paths">
+      <div class="cta-card">
+        <h3>Builder Program</h3>
+        <p>No experience needed. 4-month program + paid internship. Learn AI. Ship real software. Top performers get hired.</p>
+        <a href="apply.html" class="hero-cta" id="cta-apply-btn">Apply Now →</a>
+        <p class="cta-fee" id="cta-fee">Applications open · Starts Sep 7, 2026</p>
+      </div>
+      <div class="cta-card">
+        <h3>Experienced</h3>
+        <p>2+ years shipping software? Skip the program. Join the team directly. Full-time AI engineer role.</p>
+        
+        <a href="mailto:careers@theinfinitra.com" class="hero-cta" style="margin-top: 1rem; font-size: 0.9rem; padding: 0.8rem 1.8rem;">careers@theinfinitra.com →</a>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 1rem;">Send your resume + a short note on what you've built. Selected candidates will be invited for a half-day evaluation at our studio.</p>
+        
+      </div>
+    </div>
   </div>
 </section>
 
@@ -843,11 +895,13 @@
         btn.removeAttribute('href');
       });
       document.querySelector('.hero-meta').textContent = 'Next cohort coming soon.';
-      document.querySelector('.cta-fee').textContent = 'Leave your email on the application page to be notified about the next cohort.';
+      const ctaFee = document.getElementById('cta-fee');
+      if (ctaFee) ctaFee.textContent = 'Next cohort coming soon. Leave your email on the application page to be notified.';
     } else if (status.waitlist) {
       // Past deadline but still accepting for waitlist
       document.querySelector('.hero-meta').textContent = 'Deadline passed · Waitlist applications open';
-      document.querySelector('.cta-fee').textContent = status.message;
+      const ctaFee = document.getElementById('cta-fee');
+      if (ctaFee) ctaFee.textContent = status.message;
       const buttons = document.querySelectorAll('#nav-apply-btn, #hero-apply-btn, #cta-apply-btn');
       buttons.forEach(btn => {
         btn.textContent = 'Join Waitlist →';
