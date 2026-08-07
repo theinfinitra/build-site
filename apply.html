@@ -464,6 +464,10 @@
         <span class="choice-key">E</span> Other
       </div>
     </div>
+    <!-- Honeypot — invisible to humans, bots auto-fill it -->
+    <div style="position:absolute;left:-9999px;" aria-hidden="true">
+      <input type="text" id="website_url" name="website_url" tabindex="-1" autocomplete="off">
+    </div>
     <div class="nav">
       <button class="btn btn-back" onclick="prevSlide()">← Back</button>
       <button class="btn btn-primary" id="submitBtn" onclick="submitForm()">Submit →</button>
@@ -473,10 +477,14 @@
   <!-- Slide 9: Success -->
   <div class="slide end-screen" data-slide="9">
     <p class="q-text">Application received.</p>
-    <p class="q-hint"><strong>Next step:</strong> Complete a short challenge. 4 questions, ~18 minutes. Open-book — use any tool you want.<br><br>You have 24 hours. Do it now while you're here.</p>
+    <p class="q-hint"><strong>Next step:</strong> Complete a short challenge. 4 questions, ~18 minutes. Open-book — use any tool you want.<br><br>Do it now while you're here — or come back anytime before the deadline.</p>
     <div class="nav" style="margin-top: 1.5rem;">
       <a id="challenge-link" href="#" class="btn btn-primary" style="text-decoration: none;">Start Challenge →</a>
     </div>
+    <p style="margin-top: 2rem; font-size: 0.82rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 1.2rem; line-height: 1.6;">
+      <strong style="color: var(--text);">What happens next?</strong><br>
+      We review applications weekly. Shortlisted candidates are invited to a half-day selection at our Kurnool studio. You'll hear from us within 10 days.
+    </p>
   </div>
 
   <!-- Closed state (shown when applications are closed) -->
@@ -513,20 +521,14 @@
       endSlide.classList.add('active');
       const email = localStorage.getItem('infinitra_email') || '';
       const challengeDone = localStorage.getItem('infinitra_challenge_' + email);
-      const applyTime = parseInt(localStorage.getItem('infinitra_applied_time') || '0');
-      const hoursElapsed = (Date.now() - applyTime) / (1000 * 60 * 60);
 
       if (challengeDone) {
         endSlide.querySelector('.q-text').textContent = "All done.";
-        endSlide.querySelector('.q-hint').innerHTML = "Application and challenge complete. We'll call you within a week.";
-        endSlide.querySelector('.nav').style.display = 'none';
-      } else if (hoursElapsed > 24) {
-        endSlide.querySelector('.q-text').textContent = "Challenge window closed.";
-        endSlide.querySelector('.q-hint').innerHTML = "Your 24-hour window to complete the challenge has passed. We'll still review your application and may reach out.";
+        endSlide.querySelector('.q-hint').innerHTML = "Application and challenge complete. We'll be in touch within 10 days.";
         endSlide.querySelector('.nav').style.display = 'none';
       } else {
         endSlide.querySelector('.q-text').textContent = "You've already applied.";
-        endSlide.querySelector('.q-hint').innerHTML = "Still need to complete your challenge? You have " + Math.round(24 - hoursElapsed) + " hours left.";
+        endSlide.querySelector('.q-hint').innerHTML = "Still need to complete your challenge? It takes about 18 minutes.";
         document.getElementById('challenge-link').href = 'challenge.html?email=' + encodeURIComponent(email);
       }
       document.getElementById('progressBar').style.width = '100%';
@@ -664,6 +666,16 @@
   // --- Submit ---
   async function submitForm() {
     saveCurrentData();
+
+    // Honeypot check — if filled, it's a bot
+    if (document.getElementById('website_url').value) {
+      // Fake success — don't alert the bot
+      currentSlide = 9;
+      showSlide(9);
+      document.getElementById('progressBar').style.width = '100%';
+      return;
+    }
+
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
     btn.closest('.slide').classList.add('submitting');
