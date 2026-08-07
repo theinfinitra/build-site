@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Infinitra Build — Program Curriculum</title>
+  <meta name="description" content="12-week intensive program curriculum. From zero coding experience to production AI developer.">
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-display@700,600,500&f[]=satoshi@400,500,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --primary: #7c3aed;
+      --primary-hover: #6d28d9;
+      --primary-light: #f5f3ff;
+      --bg: #faf9f7;
+      --text: #1c1917;
+      --text-muted: #57534e;
+      --text-light: #78716c;
+      --border: #e7e5e4;
+      --card-bg: #ffffff;
+      --phase1: #2563eb;
+      --phase1-bg: #eff6ff;
+      --phase2: #7c3aed;
+      --phase2-bg: #f5f3ff;
+      --phase3: #059669;
+      --phase3-bg: #ecfdf5;
+      --accent: #d97706;
+    }
+
+    [data-theme="dark"] {
+      --primary: #84cc16;
+      --primary-hover: #65a30d;
+      --primary-light: #1a2e05;
+      --bg: #09090b;
+      --text: #fafafa;
+      --text-muted: #a1a1aa;
+      --text-light: #71717a;
+      --border: #27272a;
+      --card-bg: #18181b;
+      --phase1: #60a5fa;
+      --phase1-bg: #172554;
+      --phase2: #a78bfa;
+      --phase2-bg: #1e1b4b;
+      --phase3: #34d399;
+      --phase3-bg: #022c22;
+      --accent: #fbbf24;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --primary: #84cc16;
+        --primary-hover: #65a30d;
+        --primary-light: #1a2e05;
+        --bg: #09090b;
+        --text: #fafafa;
+        --text-muted: #a1a1aa;
+        --text-light: #71717a;
+        --border: #27272a;
+        --card-bg: #18181b;
+        --phase1: #60a5fa;
+        --phase1-bg: #172554;
+        --phase2: #a78bfa;
+        --phase2-bg: #1e1b4b;
+        --phase3: #34d399;
+        --phase3-bg: #022c22;
+        --accent: #fbbf24;
+      }
+    }
+
+    body {
+      font-family: 'Satoshi', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      font-size: 16px;
+    }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 1.5rem; }
+
+    /* Header */
+    header {
+      padding: 4rem 0 3rem;
+      text-align: center;
+    }
+    header h1 {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+    header h1 span { color: var(--primary); }
+    .subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+
+    /* Phase overview */
+    .phase-overview {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin: 2rem 0 3rem;
+    }
+    .phase-card {
+      border-radius: 0.75rem;
+      padding: 1.25rem;
+      border: 1px solid var(--border);
+    }
+    .phase-card.p1 { background: var(--phase1-bg); border-color: var(--phase1); }
+    .phase-card.p2 { background: var(--phase2-bg); border-color: var(--phase2); }
+    .phase-card.p3 { background: var(--phase3-bg); border-color: var(--phase3); }
+    .phase-card .phase-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.3rem;
+    }
+    .phase-card.p1 .phase-label { color: var(--phase1); }
+    .phase-card.p2 .phase-label { color: var(--phase2); }
+    .phase-card.p3 .phase-label { color: var(--phase3); }
+    .phase-card h3 {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 1.1rem;
+      margin-bottom: 0.25rem;
+    }
+    .phase-card p { font-size: 0.85rem; color: var(--text-muted); }
+
+    /* Sections */
+    section { margin: 3rem 0; }
+    section > h2 {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    section > .section-sub {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+    }
+
+    /* Week cards */
+    .week {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .week-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+    .week-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.25rem 0.6rem;
+      border-radius: 0.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .p1 .week-num { background: var(--phase1-bg); color: var(--phase1); }
+    .p2 .week-num { background: var(--phase2-bg); color: var(--phase2); }
+    .p3 .week-num { background: var(--phase3-bg); color: var(--phase3); }
+    .week h3 {
+      font-family: 'Clash Display', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    .week-deliverable {
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 600;
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* Day table */
+    .day-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 0.75rem;
+    }
+    .day-table th {
+      text-align: left;
+      font-weight: 600;
+      padding: 0.4rem 0.6rem;
+      border-bottom: 2px solid var(--border);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+    }
+    .day-table td {
+      padding: 0.5rem 0.6rem;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .day-table tr:last-child td { border-bottom: none; }
+    .day-table .day-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: var(--text-light);
+      width: 2rem;
+    }
+    .day-table .deliverable { color: var(--text-muted); font-size: 0.8rem; }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 3rem 0 2rem;
+      color: var(--text-light);
+      font-size: 0.85rem;
+    }
+    footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      header h1 { font-size: 2rem; }
+      .phase-overview { grid-template-columns: 1fr; }
+      .meta-grid { grid-template-columns: repeat(2, 1fr); }
+      .day-table .deliverable { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+
+  <header>
+    <h1>Program <span>Curriculum</span></h1>
+    <p class="subtitle">4 months intensive. Mon–Sat, 6 hours/day. 12 modules delivered at your pace. No prior coding required.</p>
+
+    <div class="phase-overview">
+      <div class="phase-card p1">
+        <div class="phase-label">Month 1–2</div>
+        <h3>Foundation</h3>
+        <p>Programming, Web, Cloud, DevOps</p>
+      </div>
+      <div class="phase-card p2">
+        <div class="phase-label">Month 2–3</div>
+        <h3>AI Systems</h3>
+        <p>Bedrock API, Agents, MCP, Domain Projects</p>
+      </div>
+      <div class="phase-card p3">
+        <div class="phase-label">Month 3–4</div>
+        <h3>Build &amp; Ship</h3>
+        <p>Full-stack, Capstone, Certification</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Phase 1 -->
+  <section>
+    <h2>Phase 1: Foundation</h2>
+    <p class="section-sub">Month 1–2 · Programming + Web + Cloud + DevOps</p>
+
+    <div class="week p1">
+      <div class="week-header">
+        <span class="week-num">Module 1</span>
+        <h3>Python + Kiro + Git</h3>
+      </div>
+      <table class="day-table">
+        <thead><tr><th>Day</th><th>Topic</th><th class="deliverable">Deliverable</th></tr></thead>
+        <tbody>
+          <tr><td class="day-num">1</td><td>Software development in 2026. Setup: VS Code, terminal, Git, GitHub, Kiro, Cursor Agent</td><td class="deliverable">Dev environment ready</td></tr>
+          <tr><td class="day-num">2</td><td>Python: Variables, types, control flow, functions</td><td class="deliverable">10 problems solved</td></tr>
+          <tr><td class="day-num">3</td><td>Python: Lists, dicts, file I/O, JSON, error handling</td><td class="deliverable">CLI expense tracker</td></tr>
+          <tr><td class="day-num">4</td><td>Git workflow: branches, commits, PRs. Kiro: generating, explaining, refactoring</td><td class="deliverable">Collaborative PR exercise</td></tr>
+          <tr><td class="day-num">5</td><td>Python: Modules, classes, APIs (requests library)</td><td class="deliverable">Weather CLI app</td></tr>
+          <tr><td class="day-num">6</td><td>Testing &amp; debugging: pytest, tracebacks, VS Code debugger</td><td class="deliverable">Weather CLI with tests</td></tr>
+          <tr><td class="day-num">7</td><td><strong>Mini-project:</strong> Build a CLI tool that solves a real problem</td><td class="deliverable">Deployed to GitHub with README</td></tr>
+        </tbody>
+      </table>
+      <div class="week-deliverable">→ CLI tool deployed to GitHub with README</div>
+    </div>
+
+    <div class="week p1">
+      <div class="week-header">
+        <span class="week-num">Module 2</span>
+        <h3>Web + JavaScript + First AWS Deployment</h3>
+      </div>
+      <table class="day-table">
+        <thead><tr><th>Day</th><th>Topic</th><th class="deliverable">Deliverable</th></tr></thead>
+        <tbody>
+          <tr><td class="day-num">1</td><td>HTML + CSS + Tailwind: Structure, styling, responsive design</td><td class="deliverable">Responsive landing page</td></tr>
+          <tr><td class="day-num">2</td><td>JavaScript: DOM manipulation, events, fetch, async/await</td><td class="deliverable">Pokémon Search App</td></tr>
+          <tr><td class="day-num">3</td><td>AWS account setup. S3 static hosting. Deploy web app</td><td class="deliverable">Live URL</td></tr>
+          <tr><td class="day-num">4</td><td>AI Chat via AWS Bedrock: First AI-powered web app (chat interface)</td><td class="deliverable">Browser-based AI chat</td></tr>
+          <tr><td class="day-num">5</td><td>AWS Lambda + API Gateway: Serverless backend</td><td class="deliverable">API endpoint on AWS</td></tr>
+          <tr><td class="day-num">6</td><td>Full connection: Frontend → Lambda → Bedrock</td><td class="deliverable">AI web app live on AWS</td></tr>
+          <tr><td class="day-num">7</td><td><strong>Mini-project:</strong> Build a unique AI-powered web app</td><td class="deliverable">Custom AI app on AWS</td></tr>
+        </tbody>
+      </table>
+      <div class="week-deliverable">→ AI-powered web app live on AWS</div>
+    </div>
+
+    <div class="week p1">
+      <div class="week-header">
+        <span class="week-num">Module 3</span>
+        <h3>Backend + Databases + Docker</h3>
+      </div>
+      <table class="day-table">
+        <thead><tr><th>Day</th><th>Topic</th><th class="deliverable">Deliverable</th></tr></thead>
+        <tbody>
+          <tr><td class="day-num">1</td><td>FastAPI: Routes, request/response models, validation</td><td class="deliverable">REST API with 5 endpoints</td></tr>
+          <tr><td class="day-num">2</td><td>PostgreSQL: Tables, queries, relationships, joins</td><td class="deliverable">Database schema + seed data</td></tr>
+          <tr><td class="day-num">3</td><td>SQLAlchemy ORM + FastAPI. CRUD operations</td><td class="deliverable">API connected to database</td></tr>
+          <tr><td class="day-num">4</td><td>Authentication: JWT tokens, password hashing, protected routes</td><td class="deliverable">Auth system working</td></tr>
+          <tr><td class="day-num">5</td><td>Docker: Containerize your API. Docker Compose (API + DB)</td><td class="deliverable">Dockerized application</td></tr>
+          <tr><td class="day-num">6</td><td>Deploy: AWS RDS + Lambda (container image via ECR)</td><td class="deliverable">Production API on AWS</td></tr>
+          <tr><td class="day-num">7</td><td><strong>Mini-project:</strong> Build and deploy a complete API from scratch</td><td class="deliverable">Full-stack API on AWS</td></tr>
+        </tbody>
+      </table>
+      <div class="week-deliverable">→ Authenticated REST API with PostgreSQL, containerized, on AWS</div>
+    </div>
+
+    <div class="week p1">
+      <div class="week-header">
+        <span class="week-num">Module 4</span>
+        <h3>AWS Architecture + DevOps</h3>
+      </div>
+      <table class="day-table">
+        <thead><tr><th>Day</th><th>Topic</th><th class="deliverable">Deliverable</th></tr></thead>
+        <tbody>
+          <tr><td class="day-num">1</td><td>AWS services deep dive: EC2, S3, Lambda, RDS, DynamoDB, SQS, SNS — when to use what</td><td class="deliverable">Architecture diagram</td></tr>
+          <tr><td class="day-num">2</td><td>Infrastructure as Code: AWS CDK (Python)</td><td class="deliverable">CDK stack deploying your API</td></tr>
+          <tr><td class="day-num">3</td><td>CI/CD: GitHub Actions → build → test → deploy to AWS</td><td class="deliverable">Pipeline on every push</td></tr>
+          <tr><td class="day-num">4</td><td>Monitoring: CloudWatch logs, metrics, alarms. Error tracking</td><td class="deliverable">Dashboard + alerts</td></tr>
+          <tr><td class="day-num">5</td><td>Security: IAM (least privilege), VPC basics, encryption, Secrets Manager</td><td class="deliverable">Security audit</td></tr>
+          <tr><td class="day-num">6</td><td>Cost optimization. AWS Cloud Practitioner exam prep</td><td class="deliverable">Billing alarm + practice exam</td></tr>
+        </tbody>
+      </table>
+      <div class="week-deliverable">→ Automated CI/CD pipeline + monitoring + security-hardened deployment</div>
+    </div>
+  </section>
+
+  <!-- Phase 2 -->
+  <section>
+    <h2>Phase 2: AI Systems</h2>
+    <p class="section-sub">Month 2–3 · Bedrock API + Agents + MCP + Domain Projects</p>
+
+    <div class="week p2">
+      <div class="week-header">
+        <span class="week-num">Module 5</span>
+        <h3>AWS Bedrock + AI Application Patterns</h3>
+      </div>
+      <table class="day-table">
+        <thead><tr><th>Day</th><th>Topic</th><th class="deliverable">Deliverable</th></tr></thead>
+        <tbody>
+          <tr><td class="day-num">1</td><td>Bedrock Converse API: Models (Haiku/Sonnet/Opus), tokens, temperature, system prompts, streaming</td><td class="deliverable">Cost calculator</td></tr>
+          <tr><td class="day-num">2</td><td>Structured outputs: JSON responses, tool use (function calling)</td><td class="deliverable">Data extraction from unstructured text</td></tr>
+          <tr><td class="day-num">3</td><td>RAG: Embeddings, vector search, Amazon Bedrock Knowledge Bases</td><td class="deliverable">Q&amp;A system over documents</td></tr>
+          <tr><td class="day-num">4</td><td>Prompt engineering: Chain-of-thought, few-shot, role prompting, chaining</td><td class="deliverable">Prompt library (5 patterns)</td></tr>
+          <tr><td class="day-num">5</td><td>AI patterns: Summarization, classification, extraction, generation</td><td class="deliverable">3 mini AI apps</td></tr>
+          <tr><td class="day-num">6</td><td>Production AI: Rate limiting, caching, fallback models, cost tracking</td><td class="deliverable">Production-hardened AI endpoint</td></tr>
+        </tbody>
+      </table>
+      <div class="week-deliverable">→ Production AI application with RAG and cost management</div>
+    </div>
+
+    <div class="week p2">
+      <div class="week-header">
+        <span class="week-num">Module 6</span>
+        <h3>AI Agents + MCP</h3>
+      </div>
+      <table class="day-table">
+        <thead><tr><th>Day</th><th>Topic</th><th class="deliverable">Deliverable</th></tr></thead>
+        <tbody>
+          <tr><td class="day-num">1</td><td>What is an AI agent? Goal → Plan → Execute → Evaluate. Agent vs chatbot</td><td class="deliverable">Agent that researches + summarizes</td></tr>
+          <tr><td class="day-num">2</td><td>MCP: Servers, clients, resources, tools. Build your first MCP server</td><td class="deliverable">MCP server exposing a database</td></tr>
+          <tr><td class="day-num">3</td><td>Tool use: Bedrock calling functions, multi-step reasoning</td><td class="deliverable">Agent with 3+ tools</td></tr>
+          <tr><td class="day-num">4</td><td>Reliability: Error handling, retries, human escalation, guardrails</td><td class="deliverable">Agent with fallback + audit log</td></tr>
+          <tr><td class="day-num">5</td><td>Multi-agent: Orchestrator + specialists, pipeline pattern</td><td class="deliverable">Two-agent system</td></tr>
+          <tr><td class="day-num">6</td><td>AWS for agents: Lambda + Step Functions + Bedrock + EventBridge</td><td class="deliverable">Agent system on AWS</td></tr>
+        </tbody>
+      </table>
+      <div class="week-deliverable">→ Multi-agent system on AWS with MCP, error handling, event triggers</div>
+    </div>
+
+    <div class="week p2">
+      <div class="week-header">
+        <span class="week-num">Module 7</span>
+        <h3>Advanced Agents + Domain Application</h3>
+      </div>
+      <table class="day-table">
+        <thead><tr><th>Day</th><th>Topic</th><th class="deliverable">Deliverable</th></tr></thead>
+        <tbody>
+          <tr><td class="day-num">1</td><td>Agent design patterns: Hierarchical, swarm, supervisor, collaborative</td><td class="deliverable">Pattern comparison doc</td></tr>
+          <tr><td class="day-num">2</td><td>Memory systems: Short-term, long-term (vector DB), episodic</td><td class="deliverable">Agent with persistent memory</td></tr>
+          <tr><td class="day-num">3</td><td>Real-world admin workflows: Scheduling, intake, claims, approvals</td><td class="deliverable">Workflow map + agent design</td></tr>
+          <tr><td class="day-num">4</td><td>Conversational agent: Data collection, validation, structured storage</td><td class="deliverable">Working intake agent</td></tr>
+          <tr><td class="day-num">5</td><td>Scheduling agent: Availability checks, booking, conflict resolution, confirmations</td><td class="deliverable">Working scheduling agent</td></tr>
+          <tr><td class="day-num">6</td><td>Orchestration: End-to-end multi-agent pipeline</td><td class="deliverable">Multi-agent workflow pipeline</td></tr>
+        </tbody>
+      </table>
+      <div class="week-deliverable">→ Domain-specific multi-agent system solving real admin workflows</div>
+    </div>
+
+    <div class="week p2">
+      <div class="week-header">
+        <span class="week-num">Module 8</span>
+        <h3>Production Agent Systems</h3>
+      </div>
+      <table class="day-table">
+        <thead><tr><th>Day</th><th>Topic</th><th class="deliverable">Deliverable</th></tr></thead>
+        <tbody>
+          <tr><td class="day-num">1</td><td>Outcome measurement: Tasks completed, success rate, time saved, cost per task</td><td class="deliverable">Metrics framework</td></tr>
+          <tr><td class="day-num">2</td><td>Outcome-based pricing: Per-task, per-workflow, per-outcome models</td><td class="deliverable">Pricing model for your agent</td></tr>
+          <tr><td class="day-num">3</td><td>Compliance awareness: Audit trails, data handling, access controls</td><td class="deliverable">Audit logging added</td></tr>
+          <tr><td class="day-num">4</td><td>Scaling: Handling 100s of concurrent agent tasks. SQS queues, batch processing</td><td class="deliverable">Load test passing</td></tr>
+          <tr><td class="day-num">5</td><td>Agent monitoring dashboard: Real-time performance, cost, errors</td><td class="deliverable">Dashboard deployed</td></tr>
+          <tr><td class="day-num">6</td><td>Production hardening: Security review, documentation, handoff-ready code</td><td class="deliverable">Production-ready system</td></tr>
+        </tbody>
+      </table>
+      <div class="week-deliverable">→ Production-ready agent system with outcome tracking and monitoring</div>
+    </div>
+  </section>
+
+  <!-- Phase 3 -->
+  <section>
+    <h2>Phase 3: Build &amp; Ship</h2>
+    <p class="section-sub">Month 3–4 · Full-stack + Capstone + Certification</p>
+
+    <div class="week p3">
+      <div class="week-header">
+        <span class="week-num">Module 9</span>
+        <h3>React + Full-Stack Integration</h3>
+      </div>
+      <table class="day-table">
+        <thead><tr><th>Day</th><th>Topic</th><th class="deliverable">Deliverable</th></tr></thead>
+        <tbody>
+          <tr><td class="day-num">1</td><td>React: Components, state, props, hooks, event handling</td><td class="deliverable">Interactive UI components</td></tr>
+          <tr><td class="day-num">2</td><td>React + API: Fetching data, loading states, error handling</td><td class="deliverable">Frontend ↔ backend connected</td></tr>
+          <tr><td class="day-num">3</td><td>AI UI patterns: Streaming chat, real-time updates, progress indicators</td><td class="deliverable">Chat interface with streaming</td></tr>
+          <tr><td class="day-num">4</td><td>Full-stack assembly: React + FastAPI + PostgreSQL + Claude + AWS</td><td class="deliverable">Complete app end-to-end</td></tr>
+          <tr><td class="day-num">5</td><td>Deployment: Frontend (S3/CloudFront) + Backend (Lambda/ECS) + DB (RDS)</td><td class="deliverable">Full-stack live</td></tr>
+          <tr><td class="day-num">6</td><td>Polish: Performance, error handling, responsive design, accessibility</td><td class="deliverable">Production-quality app</td></tr>
+        </tbody>
+      </table>
+      <div class="week-deliverable">→ Complete full-stack AI application deployed on AWS</div>
+    </div>
+
+    <div class="week p3">
+      <div class="week-header">
+        <span class="week-num">Module 10–11</span>
+        <h3>Capstone Project (2-Week Sprint)</h3>
+      </div>
+      <p style="margin-top: 0.5rem; color: var(--text-muted); font-size: 0.9rem;">Teams of 2–3. Choose one track:</p>
+      <table class="day-table" style="margin-top: 1rem;">
+        <thead><tr><th>Track</th><th>What You Build</th></tr></thead>
+        <tbody>
+          <tr><td><strong>SaaS Product</strong></td><td>Auth, multi-tenancy, AI features, payment-ready, deployed</td></tr>
+          <tr><td><strong>Client Agent</strong></td><td>Automate a workflow for a real local business</td></tr>
+          <tr><td><strong>Domain Product</strong></td><td>Complete, demo-ready agent product</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">Daily structure: Morning standup (15 min) → Build (5 hrs) → End-of-day review (45 min)</p>
+      <div class="week-deliverable">→ Deployed, production-quality capstone with documentation and demo video</div>
+    </div>
+
+    <div class="week p3">
+      <div class="week-header">
+        <span class="week-num">Module 12</span>
+        <h3>Certification + Graduation</h3>
+      </div>
+      <table class="day-table">
+        <thead><tr><th>Day</th><th>Topic</th><th class="deliverable">Deliverable</th></tr></thead>
+        <tbody>
+          <tr><td class="day-num">1</td><td>AWS Cloud Practitioner: Full practice exam + review</td><td class="deliverable">Score &gt;80% on practice</td></tr>
+          <tr><td class="day-num">2</td><td>AWS Cloud Practitioner: Weak areas deep dive + second practice exam</td><td class="deliverable">Ready for exam</td></tr>
+          <tr><td class="day-num">3</td><td>AWS Cloud Practitioner: Exam day</td><td class="deliverable">Certification</td></tr>
+          <tr><td class="day-num">4</td><td>Capstone presentations to panel</td><td class="deliverable">Public demo</td></tr>
+          <tr><td class="day-num">5</td><td>Course retrospective. Feedback. Portfolio review</td><td class="deliverable">All projects documented</td></tr>
+          <tr><td class="day-num">6</td><td>Graduation. Certificates issued</td><td class="deliverable">Course complete</td></tr>
+        </tbody>
+      </table>
+      <div class="week-deliverable">→ AWS Cloud Practitioner certification + capstone presented</div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section style="text-align: center; padding: 3rem 0;">
+    <a href="apply.html" style="display: inline-block; background: var(--primary); color: #fff; font-weight: 700; padding: 0.8rem 2rem; border-radius: 0.4rem; text-decoration: none; font-size: 1rem;">Apply Now →</a>
+    <p style="margin-top: 1rem; font-size: 0.85rem; color: var(--text-muted);">← <a href="index.html" style="color: var(--primary); text-decoration: none;">Back to main page</a></p>
+  </section>
+
+</div>
+
+<script>
+  // Apply saved theme on load (shared with main site)
+  (function() {
+    const saved = localStorage.getItem('theme');
+    if (saved) document.documentElement.setAttribute('data-theme', saved);
+  })();
+</script>
+
+</body>
+</html>
