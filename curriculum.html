@@ -229,19 +229,38 @@
       font-weight: 600;
     }
 
-    /* Logo (matches apply.html) */
-    .form-logo {
+    /* Nav bar */
+    .nav-bar {
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0.8rem 1.5rem;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 100%;
+    }
+    .nav-logo {
       font-family: 'Clash Display', sans-serif;
       font-weight: 700;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       color: var(--text);
-      position: fixed;
-      top: 1.5rem;
-      left: 2rem;
       text-decoration: none;
-      z-index: 100;
     }
-    .form-logo span { color: var(--primary); }
+    .nav-logo span { color: var(--primary); }
+    .nav-apply {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      background: var(--primary);
+      padding: 0.5rem 1.2rem;
+      border-radius: 0.4rem;
+      text-decoration: none;
+    }
+    .nav-apply:hover { background: var(--primary-hover); }
 
     /* Responsive */
     @media (max-width: 640px) {
@@ -254,7 +273,10 @@
 </head>
 <body>
 
-<a href="index.html" class="form-logo">infinitra<span>.build</span></a>
+<div class="nav-bar">
+  <a href="index.html" class="nav-logo">infinitra<span>.build</span></a>
+  <a href="apply.html" class="nav-apply">Apply →</a>
+</div>
 
 <div class="container">
 
