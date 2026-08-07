@@ -76,7 +76,7 @@
       font-size: 16px;
     }
 
-    .container { max-width: 860px; margin: 0 auto; padding: 0 1.5rem; }
+    .container { max-width: 800px; margin: 0 auto; padding: 0 1.5rem; }
 
     /* Header */
     header {
@@ -235,12 +235,14 @@
       top: 0;
       background: var(--bg);
       border-bottom: 1px solid var(--border);
-      padding: 0.8rem 1.5rem;
+      padding: 0.8rem 0;
       z-index: 100;
+      width: 100%;
+    }
+    .nav-bar .container {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      max-width: 100%;
     }
     .nav-logo {
       font-family: 'Clash Display', sans-serif;
@@ -274,8 +276,10 @@
 <body>
 
 <div class="nav-bar">
-  <a href="index.html" class="nav-logo">infinitra<span>.build</span></a>
-  <a href="apply.html" class="nav-apply">Apply →</a>
+  <div class="container">
+    <a href="index.html" class="nav-logo">infinitra<span>.build</span></a>
+    <a href="apply.html" class="nav-apply">Apply →</a>
+  </div>
 </div>
 
 <div class="container">

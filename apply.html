@@ -58,14 +58,15 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 2rem;
+      padding: 2rem 0;
     }
 
     /* Container */
     .form-container {
       width: 100%;
       max-width: 560px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
       min-height: 400px;
       display: flex;
       flex-direction: column;
@@ -295,18 +296,43 @@
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Logo */
-    .form-logo {
+    /* Nav bar */
+    .nav-bar {
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0.8rem 0;
+      z-index: 100;
+      width: 100%;
+    }
+    .nav-bar .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
       font-family: 'Clash Display', sans-serif;
       font-weight: 700;
-      font-size: 1.4rem;
+      font-size: 1.3rem;
       color: var(--text);
-      position: fixed;
-      top: 1.5rem;
-      left: 2rem;
       text-decoration: none;
     }
-    .form-logo span { color: var(--primary); }
+    .nav-logo span { color: var(--primary); }
+    .nav-apply {
+      font-family: 'Satoshi', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #fff;
+      background: var(--primary);
+      padding: 0.5rem 1.2rem;
+      border-radius: 0.4rem;
+      text-decoration: none;
+    }
+    .nav-apply:hover { background: var(--primary-hover); }
 
     /* Responsive */
     @media (max-width: 600px) {
@@ -319,7 +345,12 @@
 </head>
 <body>
 
-<a href="index.html" class="form-logo">infinitra<span>.build</span></a>
+<div class="nav-bar">
+  <div class="container">
+    <a href="index.html" class="nav-logo">infinitra<span>.build</span></a>
+    <a href="index.html" class="nav-apply" style="background: transparent; color: var(--text-muted); border: 1px solid var(--border);">← Back</a>
+  </div>
+</div>
 
 <div class="form-container">
   <div class="progress">

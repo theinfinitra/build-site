@@ -58,9 +58,36 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 2rem;
+      padding: 2rem 0;
     }
+
+    /* Nav bar */
+    .nav-bar {
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 0.8rem 0;
+      z-index: 100;
+      width: 100%;
+      align-self: stretch;
+    }
+    .nav-bar-inner {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: 'Clash Display', sans-serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--text);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--primary); }
 
     .container {
       width: 100%;
@@ -70,21 +97,7 @@
       flex-direction: column;
     }
 
-    /* Header bar */
-    .challenge-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
-    }
-    .logo {
-      font-family: 'Clash Display', sans-serif;
-      font-weight: 700;
-      font-size: 1.1rem;
-      color: var(--text);
-      text-decoration: none;
-    }
-    .logo span { color: var(--primary); }
+    /* Timer */
     .timer {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.85rem;
@@ -304,12 +317,14 @@
 </head>
 <body>
 
-<div class="container">
-
-  <div class="challenge-header">
-    <a href="index.html" class="logo">infinitra<span>.build</span></a>
+<div class="nav-bar">
+  <div class="nav-bar-inner">
+    <a href="index.html" class="nav-logo">infinitra<span>.build</span></a>
     <div class="timer" id="timer">--:--</div>
   </div>
+</div>
+
+<div class="container">
 
   <div class="progress">
     <div class="progress-bar" id="progressBar" style="width: 0%"></div>
